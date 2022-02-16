@@ -1,5 +1,5 @@
 
-require(["esri/map","esri/geometry/Extent","esri/layers/FeatureLayer","esri/layers/ArcGISDynamicMapServiceLayer","dojo/domReady!"],function(Map, Extent, FeatureLayer, ArcGISDynamicMapServiceLayer){ //El DOM READY DEBE IR EL ULTIMO!!!!!! 
+require(["esri/map","esri/geometry/Extent","esri/layers/FeatureLayer","esri/layers/ArcGISDynamicMapServiceLayer","esri/dijit/BasemapToggle","dojo/domReady!"],function(Map, Extent,FeatureLayer, ArcGISDynamicMapServiceLayer, BasemapToggle,){ //El DOM READY DEBE IR EL ULTIMO!!!!!! 
     var myMap = new Map('divMap',{
         basemap: 'gray',
         extent: new Extent ({
@@ -13,6 +13,12 @@ require(["esri/map","esri/geometry/Extent","esri/layers/FeatureLayer","esri/laye
         })
     
     });
+
+
+    
+
+
+
     var ciudades = new ArcGISDynamicMapServiceLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer", {"opacity": 0.4});
 
     //Para poner las capas que queremos
@@ -22,7 +28,14 @@ require(["esri/map","esri/geometry/Extent","esri/layers/FeatureLayer","esri/laye
     var temblores = new FeatureLayer("http://services.arcgis.com/ue9rwulIoeLEI9bj/arcgis/rest/services/Earthquakes/FeatureServer/0");
 
 
-    temblores.setDefinitionExpression("MAGNITUDE > 2");
+    temblores.setDefinitionExpression("MAGNITUDE >= 2");
 
     myMap.addLayers([ciudades, temblores]);
+
+    var basemapToggle = new BasemapToggle({
+        map: myMap,
+        visible: true,
+        basemap: "topo"
+      }, "widget");
+      basemapToggle.startup();
 },) 
