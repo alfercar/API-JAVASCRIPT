@@ -15,6 +15,7 @@ require([
         "esri/layers/ArcGISDynamicMapServiceLayer",
         "esri/layers/FeatureLayer",
         "esri/dijit/Legend",
+        "esri/arcgis/utils",
 
         "dojo/ready",
         "dojo/parser",
@@ -22,7 +23,7 @@ require([
 
         "dijit/layout/BorderContainer",
         "dijit/layout/ContentPane"],
-    function (Map, arcgisUtils, Extent, ArcGISDynamicMapServiceLayer, FeatureLayer, Legend,
+    function (Map, arcgisUtils, Extent, ArcGISDynamicMapServiceLayer, FeatureLayer, Legend, utils,
               ready, parser, on,
               BorderContainer, ContentPane) {
 // @formatter:on
