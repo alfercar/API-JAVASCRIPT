@@ -1,82 +1,56 @@
 var mapMain;
 var legendLayers;
+var webmapId = "7d987ba67f4640f0869acb82ba064228";
 
-/*
- * Step: Update the Web map Id
- */
-
-
-
-// @formatter:off
 require([
-        "esri/map",
-        "esri/arcgis/utils",
+    "dojo/dom",
+    "esri/arcgis/utils",
+    "esri/dijit/Legend",
+    "esri/dijit/Scalebar",
+    "esri/dijit/BasemapGallery",
+    "dojo/ready",
+    "dojo/parser"],
+    function (dom,arcgisUtils, Legend, Scalebar,BasemapGallery, ready, parser) {
 
-        "dijit/layout/BorderContainer",
-        "dijit/layout/ContentPane"],
-    function (Map, arcgisUtils,
-              BorderContainer, ContentPane) {
+        ready(function () {
+            parser.parse();
 
-// @formatter:on
+            arcgisUtils.createMap(webmapId, "cpCenter").then(function (response) {
+                //eL .then concatena metodo, hasta que no se ejecuta el primero no lo hace el segundo
+                console.log(response)
+                //Ver que hace response
+                let capasLeyenda = arcgisUtils.getLegendLayers(response);
 
+                console.log('capasLeyenda', capasLeyenda);
+                
 
-        var webmapId = "7d987ba67f4640f0869acb82ba064228";
-            
-        arcgisUtils.createMap(webmapId,"cpCenter"); 
-        // // Wait until DOM is ready *and* all outstanding require() calls have been resolved
-        // ready(function () {
+                var leyendaWidget = new Legend({
+                    map: response.map,
+                    layerInfos: capasLeyenda //Se puede hacer así ya que capas leyenda es un array (en el ejercicio anterior es lo mismo)
 
-        //     // Parse DOM nodes decorated with the data-dojo-type attribute
-        //     parser.parse();
+                }, "divLegend");
 
-            
+                leyendaWidget.startup();
 
+                let titleMap = response.itemInfo.item.title;
+                dom.byId('title').innerHTML = titleMap;
 
+                var scalebar = new Scalebar({
+                    map: response.map,
+                    attachTo: "top-left",
+                    scalebarUnit: "metric" });
 
+                //lo del mapa también funciona si creas una variable con el respons
+                var mapita = response.map
 
+                var basemapGallery = new BasemapGallery({
+                    showArcGISBasemaps: true,
+                    map: mapita,
+                    attachTo: "top-right",
+                }, "basemapGallery");
+                //Si vas a usar algo de html hay que poner el startup
+                basemapGallery.startup();
 
-
-
-        //     // Specify the initial extent
-           
-
-
-        //     /*
-        //      * Step: Create a map using a web map ID
-        //     */
-
-
-
-           
-
-		// 		/*
-		// 		 * Step: Get the map from the response
-		// 		*/
-				
-				
-		// 		/*
-        //          * Step: update the Legend
-		// 		*/
-
-
-        //     // });   
-
-
-        //     //create a map
-            
-
-        //     // Add the USA map service to the map
-            
-
-
-        //     // Add the earthquakes layer to the map
-            
-
-
-        //     // Add the legend to the map
-         
-
-
-        // });
-
+            });
+        })
     });
