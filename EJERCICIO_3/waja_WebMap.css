@@ -1,8 +1,7 @@
-html, body, #map {
+html, body, #map, #cpCenter {
     height: 100%;
     width: 100%;
-    margin: 0;
-    padding: 0;
+   
 }
 
 body {
@@ -26,4 +25,3 @@ body {
     right: 20px;
     z-index: 50;
 }
-
