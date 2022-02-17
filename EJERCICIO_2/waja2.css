@@ -1,6 +1,6 @@
 html, body, #divMap {
     height: 100%;
-    width: 100%;
+    width:100%;
 }
 #togepi{
     position: absolute;
@@ -10,10 +10,17 @@ html, body, #divMap {
 }
 
 #muestra{
+    position: relative;
+    top: 20px;
+    left: 20px;
+    z-index: 50;
+}
+
+#legendDiv{
     position: absolute;
-    bottom: 20px;
-   left: 20px;
-    z-index: 70;
+    bottom: 200px;
+    right: 20px;
+    z-index: 60; 
 }
 
 /* body {

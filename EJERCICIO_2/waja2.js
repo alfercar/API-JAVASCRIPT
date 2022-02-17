@@ -40,5 +40,6 @@ require(["esri/map", "esri/geometry/Extent", "esri/layers/FeatureLayer","esri/la
         map: myMap
       }, "legendDiv");
       legend.startup();
+      legend.ALIGN_LEFT
 
 });
