@@ -1,5 +1,5 @@
 JS:
-require(["esri/map", "esri/geometry/Extent", "esri/layers/FeatureLayer","esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/BasemapToggle", "esri/dijit/OverviewMap", "dojo/domReady!"], function (Map, Extent, FeatureLayer, ArcGISDynamicMapServiceLayer, BasemapToggle, OverviewMap) {
+require(["esri/map", "esri/geometry/Extent", "esri/layers/FeatureLayer","esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/BasemapToggle", "esri/dijit/OverviewMap", "esri/dijit/Legend","dojo/domReady!"], function (Map, Extent, FeatureLayer, ArcGISDynamicMapServiceLayer, BasemapToggle, OverviewMap, Legend) {
     var sanfrancisco =  new Extent(
         {
             xmin: -13681103.419777958,
@@ -35,5 +35,10 @@ require(["esri/map", "esri/geometry/Extent", "esri/layers/FeatureLayer","esri/la
           map: myMap,
       }, "muestra");
       overviewMap.startup();
+
+      var legend = new Legend({
+        map: myMap
+      }, "legendDiv");
+      legend.startup();
 
 });
