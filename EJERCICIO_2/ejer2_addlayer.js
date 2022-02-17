@@ -1,5 +1,5 @@
 
-require(["esri/map","esri/geometry/Extent","esri/layers/FeatureLayer","esri/layers/ArcGISDynamicMapServiceLayer","esri/dijit/BasemapToggle","dojo/domReady!"],function(Map, Extent,FeatureLayer, ArcGISDynamicMapServiceLayer, BasemapToggle,){ //El DOM READY DEBE IR EL ULTIMO!!!!!! 
+require(["esri/map","esri/geometry/Extent","esri/layers/FeatureLayer","esri/layers/ArcGISDynamicMapServiceLayer","esri/dijit/BasemapToggle","esri/dijit/OverviewMap","dojo/domReady!"],function(Map, Extent,FeatureLayer, ArcGISDynamicMapServiceLayer, BasemapToggle,overviewMap){ //El DOM READY DEBE IR EL ULTIMO!!!!!! 
     var myMap = new Map('divMap',{
         basemap: 'gray',
         extent: new Extent ({
@@ -38,4 +38,9 @@ require(["esri/map","esri/geometry/Extent","esri/layers/FeatureLayer","esri/laye
         basemap: "topo"
       }, "widget");
       basemapToggle.startup();
+
+      var OverviewMapa = new overviewMap({
+        map: myMap
+      },"vistagrande");
+      OverviewMapa.startup();
 },) 

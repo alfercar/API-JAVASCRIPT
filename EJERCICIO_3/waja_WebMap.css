@@ -1,15 +1,8 @@
-html, body, #myMap {
+html, body, #map {
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
-}
-
-#BasemapToggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 50;
 }
 
 body {
@@ -27,4 +20,10 @@ body {
     width: 117px;
 }
 
+#BasemapToggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 50;
+}
 

@@ -15,8 +15,6 @@ require([
         "esri/layers/ArcGISDynamicMapServiceLayer",
         "esri/layers/FeatureLayer",
         "esri/dijit/Legend",
-        "esri/dijit/BasemapToggle",
-        "esri/dijit/OverviewMap",
 
         "dojo/ready",
         "dojo/parser",
@@ -24,7 +22,7 @@ require([
 
         "dijit/layout/BorderContainer",
         "dijit/layout/ContentPane"],
-    function (Map, arcgisUtils, Extent, ArcGISDynamicMapServiceLayer, FeatureLayer, Legend,BasemapToggle, OverviewMap,
+    function (Map, arcgisUtils, Extent, ArcGISDynamicMapServiceLayer, FeatureLayer, Legend,
               ready, parser, on,
               BorderContainer, ContentPane) {
 // @formatter:on
@@ -48,7 +46,26 @@ require([
             });
 
 
-         
+            /*
+             * Step: Create a map using a web map ID
+            */
+
+            // arcgisUtils.createMap(webmapId,"cpCenter").then(function(response){
+
+				/*
+				 * Step: Get the map from the response
+				*/
+				
+				
+				/*
+                 * Step: update the Legend
+				*/
+
+
+            // });   
+
+
+            //create a map
             mapMain = new Map("cpCenter", {
                 basemap: "satellite",
                 extent: extentInitial
@@ -61,48 +78,19 @@ require([
 
 
             // Add the earthquakes layer to the map
-           
-
-            var lyrQuakes = new FeatureLayer("http://services.arcgis.com/ue9rwulIoeLEI9bj/arcgis/rest/services/Earthquakes/FeatureServer/0");
-
+            var lyrQuakes = new FeatureLayer("http://tmservices1.esri.com/arcgis/rest/services/LiveFeeds/Earthquakes/MapServer/0");
             lyrQuakes.setDefinitionExpression("MAGNITUDE >= 2.0");
-
             mapMain.addLayers([lyrUSA, lyrQuakes]);
-
-            var toggle = new BasemapToggle({
-                map: mapMain
-            },"BasemapToggle");
-            toggle.startup();
-
-            var OverviewMapDijit = new OverviewMap ({
-                map: mapMain,
-                visible: true,
-                attachTo: 'bottom-right'
-            });
-            OverviewMapDijit.startup()
-
-
-
-            
 
 
             // Add the legend to the map
             mapMain.on("layers-add-result", function () {
                 var dijitLegend = new Legend({
                     map: mapMain,
-                    arrangement: Legend.ALIGN_RIGHT,
-                    layerInfos:[{
-                        layer: lyrQuakes,
-                        title: 'Terremotos'
-                    },{
-                        layer: lyrUSA,
-                        title: 'EEUU'
-                    }]
+                    arrangement: Legend.ALIGN_RIGHT
                 }, "divLegend");
                 dijitLegend.startup();
             });
-
-            
 
 
         });
