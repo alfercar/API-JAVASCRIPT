@@ -11,6 +11,11 @@ require([
     "esri/map",
     "esri/geometry/Extent",
     "esri/tasks/locator",
+    "esri/symbols/SimpleMarkerSymbol",
+    "esri/symbols/Font",
+    "esri/symbols/TextSymbol",
+    "esri/graphic",
+
 
     "dojo/_base/Color",
     "dojo/_base/array",
@@ -22,7 +27,7 @@ require([
 
     "dijit/layout/BorderContainer",
     "dijit/layout/ContentPane"],
-    function (Map, Extent, Locator,
+    function (Map, Extent, Locator, SimpleMarkerSymbol, Font, TextSymbol, Graphic,
         Color, array,
         dom, on, parser, ready,
         BorderContainer, ContentPane) {
@@ -40,18 +45,10 @@ require([
 
             // Create the map
 
-            var mapMain = new Map('cpCenter', {
-                basemap: 'dark-gray',
-                extent: new Extent({
-                    xmin: -14984446.002985604,
-                    ymin: 3583338.3730520504,
-                    xmax: -11227413.188713621,
-                    ymax: 5349339.474552293,
-                    spatialReference: {
-                        wkid: 102100
-                    }
-                })
-
+            mapMain = new Map("cpCenter", {
+                basemap: "topo",
+                center: [-117.19, 34.05],
+                zoom: 13
             });
 
 
@@ -65,36 +62,45 @@ require([
              * Step: Wire the button's onclick event handler
              */
 
-           
+
             on(dom.byId("btnLocate"), "click", doAddressToLocations)
 
-            
+
 
             /*
              * Step: Wire the task's completion event handler
              */
-            
-            locator.on("location-to-address-complete", showResults);
-           
+
+            locator.on("address-to-locations-complete", showResults); //cuando acabado la busqueda se ejecuta la siguiente funcion, showresults
+
 
             function doAddressToLocations() {
-                alert("Has hecho click en el localizador, espere mientras se realiza la búsqueda");
-                mapMain.graphics.clear();
+                // alert("Has hecho click en el localizador, espere mientras se realiza la búsqueda");
+                mapMain.graphics.clear(); //limpia la capa grafica (temporal)
 
                 /*
                  * Step: Complete the Locator input parameters
                  */
+
+                var direction = dom.byId("taAddress").value;
+                console.log("Dirección: ", direction);
+
                 var objAddress = {
-                    "field_name": dom.byId("taAddress").value
-                }
-                var params = {address:objAddress}
+                    //Lo de single line está en la api, buscando en lo de address
+                    "SingleLine": direction
+                };
+
+                // var objAddress = {
+                //     "SingleLine": dom.byId("taAddress").value
+                // };
+                var params = { address: objAddress };
+                console.log(params);
 
 
                 /*
                  * Step: Execute the task
                  */
 
-                locator.outSpatialReference = mapMain.spatialReference;
 
                 locator.addressToLocations(params);
 
@@ -103,10 +109,12 @@ require([
 
             function showResults(candidates) {
                 // Define the symbology used to display the results
+                console.log("candidates: ", candidates);
+
                 var symbolMarker = new SimpleMarkerSymbol();
                 symbolMarker.setStyle(SimpleMarkerSymbol.STYLE_CIRCLE);
-                symbolMarker.setColor(new Color([255, 0, 0, 0.75]));
-                var font = new Font("14pt", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, "Helvetica");
+                symbolMarker.setColor(new Color([255, 155, 155, 0.75]));
+                var font = new Font("15pt", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, "Helvetica");
 
                 // loop through the array of AddressCandidate objects
                 var geometryLocation;
@@ -125,11 +133,18 @@ require([
                         /*
                          * Step: Retrieve the result's geometry
                          */
+                        var geometryLocation = candidate.location;
 
 
                         /*
-                         * Step: Display the geocoded location on the map
+                         * Step: Display the geocoded location on the map. aqui se pone el circulo rojo
                          */
+                        var circulo = new Graphic(geometryLocation,symbolMarker); 
+                        
+                        //siempre decirle donde y como se pinta
+
+                        mapMain.graphics.add(circulo)
+
 
 
                         // display the candidate's address as text
@@ -145,9 +160,11 @@ require([
 
                 // Center and zoom the map on the result
                 if (geometryLocation !== undefined) {
+                    mapMain.centerAndZoom(geometryLocation, 12)
                 }
             }
 
         });
 
     });
+
