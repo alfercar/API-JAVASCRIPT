@@ -71,8 +71,12 @@ require([
                 opacity: 0.4
             });
 
+            //Para usarla abajo
+            var outFieldsLayer = ['EQID','MAGNITUDE','UTC_DATETIME','PLACE']
 
-            var temblores = new FeatureLayer("http://services.arcgis.com/ue9rwulIoeLEI9bj/arcgis/rest/services/Earthquakes/FeatureServer/0");
+            var temblores = new FeatureLayer("http://services.arcgis.com/ue9rwulIoeLEI9bj/arcgis/rest/services/Earthquakes/FeatureServer/0",{
+                outFields: outFieldsLayer
+            });
 
 
             // Create the map
@@ -99,7 +103,7 @@ require([
 
             // Construct the Quakes layer
 
-            // temblores.setDefinitionExpression("MAGNITUDE >= 2");
+            temblores.setDefinitionExpression("MAGNITUDE >= 2");
 
             // var lyrQuakes = new FeatureLayer(sUrlQuakesLayer, {
             //     /*
@@ -194,14 +198,14 @@ require([
                 query.geometry = geometryInput;
 
                 // query.spatialRelationship = Query.SPATIAL_REL_CONTAINS;
-                
+
 
                 query.outFields = ["*"];
 
-                 /*
-                 * Step: Perform the selection
-                 */
-                 temblores.selectFeatures(query);
+                /*
+                * Step: Perform the selection
+                */
+                temblores.selectFeatures(query);
 
 
                 /*
@@ -215,13 +219,13 @@ require([
 
                 temblores.on("selection-complete", populateGrid);
 
-               
+
 
             }
 
             function populateGrid(results) {
 
-            //el results sale del selection complete. Lo que devuelve el metodo select features. Es un feature set, un conjunto de elementos (objeto)
+                //el results sale del selection complete. Lo que devuelve el metodo select features. Es un feature set, un conjunto de elementos (objeto)
 
 
                 console.log("results:", results)
@@ -229,10 +233,17 @@ require([
                 var gridData;
 
                 dataQuakes = array.map(results.features, function (feature) {
+                    //El .map modificaba todos los elementos de una clase de entidad
+                    console.log(feature)
                     return {
                         /*
                          * Step: Reference the attribute field values
                          */
+                        EQID: feature.attributes.EQID,
+                        PLACE: feature.attributes.PLACE,
+                        MAGNITUDE: feature.attributes.MAGNITUDE,
+                        UTC_DATETIME: feature.attributes.UTC_DATETIME,
+                        
 
 
                     }
