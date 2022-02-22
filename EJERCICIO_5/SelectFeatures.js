@@ -11,6 +11,7 @@ require([
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol",
     "esri/symbols/SimpleMarkerSymbol",
+    "esri/tasks/query",
 
     "dojo/ready",
     "dojo/parser",
@@ -33,7 +34,7 @@ require([
     function (Map, Extent, FeatureLayer,
         ArcGISDynamicMapServiceLayer,
         Draw, Graphic, SimpleFillSymbol,
-        SimpleLineSymbol, SimpleMarkerSymbol,
+        SimpleLineSymbol, SimpleMarkerSymbol, Query,
 
         ready, parser, on, dom,
         Memory, locale,
@@ -98,7 +99,7 @@ require([
 
             // Construct the Quakes layer
 
-            temblores.setDefinitionExpression("MAGNITUDE >= 2");
+            // temblores.setDefinitionExpression("MAGNITUDE >= 2");
 
             // var lyrQuakes = new FeatureLayer(sUrlQuakesLayer, {
             //     /*
@@ -176,37 +177,54 @@ require([
                 var symbolSelected = new SimpleMarkerSymbol({
                     "type": "esriSMS",
                     "style": "esriSMSCircle",
-                    "color": [255, 115, 0, 128],
+                    "color": [0, 255, 0, 128],
                     "size": 6,
                     "outline": {
-                        "color": [255, 0, 0, 214],
+                        "color": [0, 255, 0, 214],
                         "width": 1
                     }
                 });
-
-                /*
-                 * Step: Set the selection symbol
-                 */
 
 
                 /*
                  * Step: Initialize the query
                  */
 
+                var query = new Query();
+                query.geometry = geometryInput;
+
+                // query.spatialRelationship = Query.SPATIAL_REL_CONTAINS;
+                
+
+                query.outFields = ["*"];
+
+                 /*
+                 * Step: Perform the selection
+                 */
+                 temblores.selectFeatures(query);
+
+
+                /*
+                 * Step: Set the selection symbol
+                 */
+                temblores.setSelectionSymbol(symbolSelected)
 
                 /*
                  * Step: Wire the layer's selection complete event
                  */
 
+                temblores.on("selection-complete", populateGrid);
 
-                /*
-                 * Step: Perform the selection
-                 */
-
+               
 
             }
 
             function populateGrid(results) {
+
+            //el results sale del selection complete. Lo que devuelve el metodo select features. Es un feature set, un conjunto de elementos (objeto)
+
+
+                console.log("results:", results)
 
                 var gridData;
 
