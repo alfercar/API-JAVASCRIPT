@@ -1,8 +1,3 @@
-
-//Ahora vamos a hacer lo mismo que antes (search widget) pero con una tarea (task)
-
-
-
 var mapMain;
 
 // @formatter:off
@@ -30,70 +25,72 @@ require(["esri/map",
               Color, array,
               dom, on, parser, ready,
               BorderContainer, ContentPane) {
-        // @formatter:on
+// @formatter:on
 
         // Wait until DOM is ready *and* all outstanding require() calls have been resolved
         ready(function () {
 
             var taskLocator;
 
-
-
             // Parse DOM nodes decorated with the data-dojo-type attribute
             parser.parse();
 
-            // Create the map
-
-            mapMain = new Map("cpCenter", {
-                basemap: "topo",
-                center: [-117.19, 34.05],
-                zoom: 13
+            mapMain = new Map("cpCenter",
+            {
+                basemap: "topo-vector",
+                zoom: 14,
+                center : [-3.545067,40.376479 ],
             });
 
+            
+            
+
+            
+            // Create the map
+           
 
             /*
              * Step: Construct and bind the Locator task
              */
-            var locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
-
+            
+            var localizador = new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
 
             /*
              * Step: Wire the button's onclick event handler
              */
 
-
-            on(dom.byId("btnLocate"), "click", doAddressToLocations)
-
+            //var clickar = document.getElementById("btnLocate");
+            // clickar.addEventListener("click", doAddressToLocations);
+            on(dom.byId("btnLocate"), "click", doAddressToLocations)            
 
 
             /*
              * Step: Wire the task's completion event handler
              */
-
-           
+            
 
 
             function doAddressToLocations() {
-                // alert("Has hecho click en el localizador, espere mientras se realiza la búsqueda");
-                mapMain.graphics.clear(); //limpia la capa grafica (temporal)
+                mapMain.graphics.clear();
+                alert("has clickado el boton");
 
                 /*
                  * Step: Complete the Locator input parameters
                  */
-
-                var direction = dom.byId("taAddress").value;
-                console.log("Dirección: ", direction);
-
+                var direcciones = dom.byId("taAddress").value
                 var objAddress = {
-                    //Lo de single line está en la api, buscando en lo de address
-                    "SingleLine": direction
+                    "SingleLine" : direcciones,
+                };
+                var params = {
+                    address : objAddress,
                 };
 
-                // var objAddress = {
-                //     "SingleLine": dom.byId("taAddress").value
-                // };
-                var params = { address: objAddress };
-                console.log(params);
+                
+           
+
+                localizador.addressToLocations(params);
+                console.log("calles",objAddress);
+
 
 
                 /*
@@ -101,17 +98,25 @@ require(["esri/map",
                  */
 
 
-                locator.addressToLocations(params);
+            };
+        
+
+//             localizador.on("address-to-locations-complete", resultad)
+//             function resultad(evnt) {
+// console.log(evnt)
+//                 var callejuelas = evnt.addresses;
+//                 console.log(callejuelas)
+//             };
+
+    //     })
+    // })
 
 
-            }
 
-            locator.on("address-to-locations-complete", showResults); //cuando acabado la busqueda se ejecuta la siguiente funcion, showresults
+            localizador.on("address-to-locations-complete", showResults);
 
             function showResults(candidates) {
                 // Define the symbology used to display the results
-                console.log("candidates: ", candidates);
-
                 var symbolMarker = new SimpleMarkerSymbol();
                 symbolMarker.setStyle(SimpleMarkerSymbol.STYLE_CIRCLE);
                 symbolMarker.setColor(new Color([255, 0, 0, 0.75]));
@@ -137,17 +142,11 @@ require(["esri/map",
                          */
                         geometryLocation = candidate.location;
 
-
                         /*
-                         * Step: Display the geocoded location on the map. aqui se pone el circulo rojo
+                         * Step: Display the geocoded location on the map
                          */
-                        var circulo = new Graphic(geometryLocation,symbolMarker); 
-                        
-                        //siempre decirle donde y como se pinta
-
-                        mapMain.graphics.add(circulo)
-
-
+                        let circulo = new Graphic(geometryLocation,symbolMarker);
+                        mapMain.graphics.add(circulo);
 
                         // display the candidate's address as text
                         var sAddress = candidate.address;
@@ -169,4 +168,3 @@ require(["esri/map",
         });
 
     });
-
