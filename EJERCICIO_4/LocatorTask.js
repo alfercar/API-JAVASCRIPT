@@ -118,7 +118,7 @@ require(["esri/map",
                 var font = new Font("14pt", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, "Helvetica");
 
                 // loop through the array of AddressCandidate objects
-                var geometryLocation;
+                var geometryLocation; //Esto se hace fuera del if, porque si se hace dentro (lo de var) no se queda para cuando lo de undefined de mas abajo, y por lo tanto no te redirige al sitio nuevo
                 array.every(candidates.addresses, function (candidate) {
 
                     // if the candidate was a good match
