@@ -57,8 +57,6 @@ require([
                 opacity: 0.4
             });
 
-            
-
             var temblores = new FeatureLayer("http://services.arcgis.com/ue9rwulIoeLEI9bj/arcgis/rest/services/Earthquakes/FeatureServer/0", {                
             });
 
@@ -91,9 +89,6 @@ require([
             // Construct and wire a button to apply the renderer
 
             on(dom.byId("progButtonNode"), "click", changeQuakesRenderer);
-
-           
-
 
             function changeQuakesRenderer() {
 
