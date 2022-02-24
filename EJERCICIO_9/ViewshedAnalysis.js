@@ -110,25 +110,29 @@ require([
             DistanceVS.units = "esriMiles";
         
         /*
-         * Step: Build the input parameters into a JSON-formatted object
+         * Step: Build the input parameters into a JSON-formatted object. Está en formato json con comillas delante. Es un objeto sin mas.
          */
         
         var params = {
           "Input_Observation_Point": inputPoint,
           "Viewshed_Distance": DistanceVS
         };
-        
 
+        console.log(params)
+        
 
         /*
-         * Step: Wire and execute the Geoprocessor
-         */
+         * Step: Wire and execute the Geoprocessor*/
 
-        
-        gp.on("execute-complete", displayViewshed);
+        //Es sincorno porque pone execute task en el enlace, si no seria submit job (asincrono)
+         
+
+        //En la API se pide un callback, que es una función que se ejecuta después
+
         gp.execute(params);
 
-
+        gp.on("execute-complete", displayViewshed);
+        
         // Se podria hacer así tambien
         // gp.execute(params, displayViewshed);
 
@@ -145,32 +149,30 @@ require([
         /*
          * Step: Extract the array of features from the results
          */
+        
 
-        var features = results[0].value.features;
+        var arrayFeatures = results.results[0].value.features;
+        //mete lo de results el ue nos piden, esta en ese elemento del objeto
 
-
-        for (var f = 0, fl = features.length; f < fl; f++) {
-          var feature = features[f];
-          feature.setSymbol(polySymbol);
-          map.graphics.add(feature);
-
-
-
-        }
-        map.setExtent(graphicsUtils.graphicsExtent(map.graphics.graphics), true);
-
-
+        
         // loop through results
         array.forEach(arrayFeatures, function (feature) {
           /*
            * Step: Symbolize and add each graphic to the map's graphics layer
            */
+          console.log("feature",feature);
+          var viewShedPolygon = new Graphic(feature.geometry,sfsResultPolygon); //recibe geometria y simbologia los graphic
+
+          mapMain.graphics.add(viewShedPolygon)
+
+
 
 
         });
 
         // update the map extent
         var extentViewshed = graphicsUtils.graphicsExtent(mapMain.graphics.graphics);
+        mapMain.setExtent(extentViewshed, true);
 
       }
 
