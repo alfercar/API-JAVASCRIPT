@@ -7,29 +7,29 @@ var mapMain;
 
 // @formatter:off
 require(["esri/map",
-"esri/tasks/locator",
-"esri/tasks/AddressCandidate",
-"esri/symbols/SimpleMarkerSymbol",
-"esri/symbols/Font",
-"esri/symbols/TextSymbol",
-"esri/graphic",
+    "esri/tasks/locator",
+    "esri/tasks/AddressCandidate",
+    "esri/symbols/SimpleMarkerSymbol",
+    "esri/symbols/Font",
+    "esri/symbols/TextSymbol",
+    "esri/graphic",
 
-        
 
-        "dojo/_base/Color",
-        "dojo/_base/array",
 
-        "dojo/dom",
-        "dojo/on",
-        "dojo/parser",
-        "dojo/ready",
+    "dojo/_base/Color",
+    "dojo/_base/array",
 
-        "dijit/layout/BorderContainer",
-        "dijit/layout/ContentPane"],
-    function (Map,Locator,AddressCandidate, SimpleMarkerSymbol,Font,TextSymbol, Graphic,
-              Color, array,
-              dom, on, parser, ready,
-              BorderContainer, ContentPane) {
+    "dojo/dom",
+    "dojo/on",
+    "dojo/parser",
+    "dojo/ready",
+
+    "dijit/layout/BorderContainer",
+    "dijit/layout/ContentPane"],
+    function (Map, Locator, AddressCandidate, SimpleMarkerSymbol, Font, TextSymbol, Graphic,
+        Color, array,
+        dom, on, parser, ready,
+        BorderContainer, ContentPane) {
         // @formatter:on
 
         // Wait until DOM is ready *and* all outstanding require() calls have been resolved
@@ -70,7 +70,7 @@ require(["esri/map",
              * Step: Wire the task's completion event handler
              */
 
-           
+
 
 
             function doAddressToLocations() {
@@ -141,8 +141,8 @@ require(["esri/map",
                         /*
                          * Step: Display the geocoded location on the map. aqui se pone el circulo rojo
                          */
-                        var circulo = new Graphic(geometryLocation,symbolMarker); 
-                        
+                        var circulo = new Graphic(geometryLocation, symbolMarker);
+
                         //siempre decirle donde y como se pinta
 
                         mapMain.graphics.add(circulo)
