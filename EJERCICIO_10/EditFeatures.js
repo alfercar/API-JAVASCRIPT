@@ -51,7 +51,7 @@ require([
 
 
       flFirePoints = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer/0", {
-        outFields: ["*"]
+        outFields: ["*"] //les decimos ue devuelvan todos los campos
       });
 
       flFireLines = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer/1", {
@@ -102,15 +102,13 @@ require([
 
         //La diferencia entre ambos radica en lo que te pide el editor y el template picker. Una te da la info de las layers y otra las layers per se
 
-
-
-
         /*
          * Step: Add a custom TemplatePicker widget
          */  
         
         var TemplatePickerWidget = new TemplatePicker({
           featureLayers: layerWildfire,
+          grouping: true,
           rows: "auto",
           columns: "auto"
         }, "divLeft");
@@ -124,30 +122,30 @@ require([
          * Step: Prepare the Editor widget settings
          */
 
-        var params = {
+        var Editorsettings = {
           settings: {
           map: mapMain,
+          templatePicker: TemplatePickerWidget,
           layerInfos: layerInfosWildfire,
+          toolbarVisible: true,
           geometryService: new GeometryService (
           "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer"),
           }
     };
 
+    var params = {settings: Editorsettings}
+
 
   
-        var EditorWidget = new Editor(params, "divLeft");
+        /*
+         * Step: Build the Editor constructor's parameterd and Construct the Editor widget
+         */
+
+        var EditorWidget = new Editor(params, "divTop");
         EditorWidget.startup();
 
 
-        /*
-         * Step: Build the Editor constructor's first parameter
-         */
-
-
-        /*
-         * Step: Construct the Editor widget
-         */
-
+        
 
       };
 
