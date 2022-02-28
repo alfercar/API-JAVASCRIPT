@@ -20,7 +20,7 @@ body {
     height: auto;
 }
 
-#taAddress {
+#taAddress, #buffer {
     height: 20px;
     width: 250px;
     vertical-align: middle;

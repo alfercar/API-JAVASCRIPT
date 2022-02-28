@@ -13,6 +13,9 @@ require(["esri/map",
   "dojo/_base/Color",
   "dojo/_base/array",
 
+  "esri/dijit/analysis/CreateBuffers",
+  "esri/tasks/BufferParameters",
+
   "dojo/dom",
   "dojo/on",
   "dojo/parser",
@@ -21,7 +24,7 @@ require(["esri/map",
   "dijit/layout/BorderContainer",
   "dijit/layout/ContentPane"],
   function (Map, Locator, AddressCandidate, SimpleMarkerSymbol, Font, TextSymbol, Graphic,
-    Color, array,
+    Color, array, CreateBuffers, BufferParameters,
     dom, on, parser, ready,
     BorderContainer, ContentPane) {
 
@@ -67,9 +70,12 @@ require(["esri/map",
         symbolMarker.setStyle(SimpleMarkerSymbol.STYLE_CIRCLE);
         symbolMarker.setColor(new Color([255, 0, 0, 0.75]));
         var font = new Font("14pt", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, "Helvetica");
+      
 
 
         var geometryLocation;
+
+
         array.every(candidates.addresses, function (candidate) {
 
 
@@ -93,6 +99,9 @@ require(["esri/map",
             textSymbol.setOffset(0, -22);
             mapMain.graphics.add(new Graphic(geometryLocation, textSymbol));
 
+
+
+    
             return false;
           }
         });
@@ -106,3 +115,15 @@ require(["esri/map",
 
   });
 
+
+ 
+
+
+
+
+
+  
+
+  
+
+ 
