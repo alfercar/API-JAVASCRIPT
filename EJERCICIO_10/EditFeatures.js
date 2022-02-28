@@ -19,7 +19,7 @@ require([
   "dijit/layout/ContentPane"],
   function (Map, FeatureLayer,
 
-    TemplatePicker,Editor,GeometryService,
+    TemplatePicker, Editor, GeometryService,
 
     ready, parser, on, array,
     BorderContainer, ContentPane) {
@@ -80,7 +80,7 @@ require([
 
         var layerInfosWildfire = array.map(results.layers, function (result) {
           return {
-            featureLayer: result.layer
+            featureLayer: result.layer //Aqui le devolvemos que es un objeto
           };
 
         });
@@ -94,7 +94,7 @@ require([
 
         var layerWildfire = array.map(results.layers, function (result) {
           return result.layer
-          ;
+            ;
 
         });
         console.log("layerWildfire", layerWildfire)
@@ -104,48 +104,66 @@ require([
 
         /*
          * Step: Add a custom TemplatePicker widget
-         */  
-        
+         */
+
         var TemplatePickerWidget = new TemplatePicker({
-          featureLayers: layerWildfire,
-          grouping: true,
-          rows: "auto",
-          columns: "auto"
+          featureLayers: layerWildfire, //No vale el la de info, en la de info hay un objeto de feature layer y eso no lo pide, pide directamente las features layers
+          columns: 2
         }, "divLeft");
         TemplatePickerWidget.startup();
 
 
-        
-  
+
+
 
         /*
          * Step: Prepare the Editor widget settings
          */
 
-        var Editorsettings = {
-          settings: {
-          map: mapMain,
-          templatePicker: TemplatePickerWidget,
-          layerInfos: layerInfosWildfire,
-          toolbarVisible: true,
-          geometryService: new GeometryService (
-          "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer"),
-          }
-    };
+        var editorsettings = {
+          
+            map: mapMain,
 
-    var params = {settings: Editorsettings}
+            geometryService: new GeometryService(
+              "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer"),// geometry service permite dibujar geometrias en el servidor
+            
+            layerInfos: layerInfosWildfire, //array de la informacion de los objetos, viene en la api
+
+            createOptions : {
+              polygonDrawTools : [Editor.CREATE_TOOL_FREEHAND_POLYGON, Editor.CREATE_TOOL_RECTANGLE, Editor.CREATE_TOOL_TRIANGLE, Editor.CREATE_TOOL_CIRCLE, Editor.CREATE_TOOL_ELLIPSE,]
+            }, //Las constantes vienen en la api como constants
+
+            toolbarVisible: true,
+
+            templatePicker: TemplatePickerWidget,
+
+            toolbarOptions : {
+              reshapeVisible : true
+            },
+
+            enableUndoRedo: true,
+
+            maxUndoRedoOperations: 20,
+          
+        };
+
+        
 
 
-  
-        /*
-         * Step: Build the Editor constructor's parameterd and Construct the Editor widget
-         */
+
+        
+         //Step: Build the Editor constructor's parameter
+        
+        var params = { settings: editorsettings }
+
+        //Step: Construct the Editor widget
+        
 
         var EditorWidget = new Editor(params, "divTop");
         EditorWidget.startup();
 
 
-        
+
 
       };
 
