@@ -1,4 +1,4 @@
-html, body, #map {
+html, body, #divMap {
     height: 100%;
     width: 100%;
     margin: 0;
@@ -16,13 +16,19 @@ body {
     height: 100%;
 }
 
-#cpHeader {
-    height: auto;
+#entradas {
+    display: flex;
+    flex-direction: column ;
+    height: 10%;
+    width: 10%;
 }
 
-#taAddress, #buffer {
+#taAddress {
     height: 20px;
     width: 250px;
     vertical-align: middle;
 }
+
+
+
 
