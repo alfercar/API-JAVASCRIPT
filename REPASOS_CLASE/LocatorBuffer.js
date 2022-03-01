@@ -14,6 +14,7 @@ require([
   "esri/geometry/normalizeUtils",
   "esri/symbols/SimpleLineSymbol",
   "esri/symbols/SimpleFillSymbol",
+  "esri/geometry/Circle",
 
 
 
@@ -27,7 +28,7 @@ require([
 
   "dijit/layout/BorderContainer",
   "dijit/layout/ContentPane"],
-  function (Map, Locator, AddressCandidate, SimpleMarkerSymbol, Font, TextSymbol, Graphic, BufferParameters, GeometryService, normalizeUtils, SimpleLineSymbol, SimpleFillSymbol,
+  function (Map, Locator, AddressCandidate, SimpleMarkerSymbol, Font, TextSymbol, Graphic, BufferParameters, GeometryService, normalizeUtils, SimpleLineSymbol, SimpleFillSymbol, Circle,
     Color, array,
     dom, on, parser, ready,
     BorderContainer, ContentPane) {
@@ -63,7 +64,10 @@ require([
       };
 
 
+
       locator.on("address-to-locations-complete", showResults);
+
+
 
       function showResults(candidates) {
 
@@ -79,32 +83,14 @@ require([
           // if the candidate was a good match
           if (candidate.score > 80) {
 
-            // retrieve attribute info from the candidate
-            var attributesCandidate = {
-              address: candidate.address,
-              score: candidate.score,
-              locatorName: candidate.attributes.Loc_name
-            };
-
-            /*
-             * Step: Retrieve the result's geometry
-             */
-
             geometryLocation = candidate.location;
-
-
-            /*
-             * Step: Display the geocoded location on the map
-            Círculo rojo */
 
             let circulo = new Graphic(geometryLocation, symbolMarker)
             mapMain.graphics.add(circulo);
 
-            // display the candidate's address as text
-            var sAddress = candidate.address;
-            var textSymbol = new TextSymbol(sAddress, font, new Color("#FF0000"));
-            textSymbol.setOffset(0, -22);
-            mapMain.graphics.add(new Graphic(geometryLocation, textSymbol));
+            mapMain.graphics.add(new Graphic(geometryLocation, symbolMarker));
+
+            createBuffer(geometryLocation); //Para instanciar la funcion fuera y que se guarde el paraemtro
 
             // exit the loop after displaying the first good match
             return false;
@@ -117,18 +103,33 @@ require([
         }
       };
 
-      
 
-      on(dom.byId("buscar"), "click", buffer);
+      function createBuffer(geometryLocation) {
+        var linecircle = new SimpleLineSymbol();
+        linecircle.setWidth(1.25);
+        linecircle.setColor(new Color([0, 0, 0, 1]));
 
-      function buffer (evt){
+        var circleSymbol = new SimpleFillSymbol();
+        circleSymbol.setColor(new Color([0, 168, 132, 0.38]));
+        circleSymbol.setOutline(linecircle);
 
-      var params = new BufferParameters();
-      params.unit = GeometryService.UNIT_KILOMETER;
-      params.geometries  = [ evt.mapPoint ];
-      params.distances = [ 50 ];
-    
-    }
+        const distance = dom.byId('inputBuffer').value;
+        circlebuffer = new Circle({
+          center: {
+            x: geometryLocation.x,
+            y: geometryLocation.y,
+            spatialReference: geometryLocation.spatialReference
+          },
+          geodesic: true,
+          radius: distance,
+          radiusUnit: "esriMeters"
+        });
+
+        var graphicBuffer = new Graphic(circlebuffer, circleSymbol);
+
+        mapMain.graphics.add(graphicBuffer);
+
+      };
 
     });
   });
