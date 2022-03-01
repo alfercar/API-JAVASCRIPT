@@ -5,12 +5,12 @@
     justify-content: space-around;
 }
 
-#MapaIzquierda {
+#map {
     height: 75%;
     width: 100%;  
 }
 
-#MapaDerecha {
+#antipodeMap {
     height: 75%;
     width: 100%; 
 }

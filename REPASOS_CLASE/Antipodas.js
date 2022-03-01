@@ -1,162 +1,70 @@
-var mapMain;
+var map;
 
-// @formatter:off
-require([
-  "esri/map",
-  "esri/tasks/Geoprocessor",
-
-
-  "esri/toolbars/draw",
-  "esri/symbols/SimpleMarkerSymbol",
-  "esri/symbols/SimpleLineSymbol",
-  "esri/symbols/SimpleFillSymbol",
+require(["esri/map", 
   "esri/Color",
   "esri/graphic",
-
-  "esri/tasks/FeatureSet",
-  "esri/tasks/LinearUnit",
-
-  "esri/tasks/locationproviders/CoordinatesLocationProvider",
-  "esri/geometry/Point",
+  "esri/symbols/SimpleMarkerSymbol",
+  "esri/geometry/Extent",
   "esri/geometry/webMercatorUtils",
-  "esri/SpatialReference",
-
-
-
-  "dojo/ready",
-  "dojo/parser",
+  "esri/geometry/Point",
   "dojo/on",
-  "dojo/_base/array"],
-  function (
-    Map, Geoprocessor, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Color, Graphic, FeatureSet, LinearUnit,
+  "dojo/domReady!"], 
 
-    CoordinatesLocationProvider, Point, webMercatorUtils, SpatialReference,
-
-    ready, parser, on, array) {
-
-    ready(function () {
-
-
-      parser.parse();
-
-      // Create the maps
-
-      mapMain = new Map("MapaIzquierda", {
-        basemap: "topo",
-        center: [-4.692268, 40.658077],
-        zoom: 3
-      });
-
-      secondMap = new Map("MapaDerecha", {
-        basemap: "dark-gray",
-        center: [-4.692268, 40.658077],
-        zoom: 3
-      });
-
-
-
-      // Collect the input observation point
-      var tbDraw = new Draw(mapMain);
-
-      tbDraw.activate(Draw.POINT)
-
-      tbDraw.on("draw-complete", PuntoInicio);
-
-
-
-      function PuntoInicio(evt) {
-
-        mapMain.graphics.clear();
-
-        // marker symbol for drawing viewpoint
-
-        var Viewpoint = new SimpleMarkerSymbol();
-        Viewpoint.setSize(12);
-        Viewpoint.setOutline(new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255]), 1));
-        Viewpoint.setColor(new Color([255, 0, 0]));
-
-
-        var geometryInput = evt.geometry;
-
-        var graphicViewpoint = new Graphic(geometryInput, Viewpoint);
-
-        mapMain.graphics.add(graphicViewpoint);
-
-
-        locatePoint(geometryInput);
-
-
-
-        ////PARA EL MAPA 2 IGUAL 
-
-        secondMap.graphics.clear();
-
-
-        // var Viewpoint2 = new SimpleMarkerSymbol();
-        // Viewpoint2.setSize(12);
-        // Viewpoint2.setOutline(new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255]), 1));
-        // Viewpoint2.setColor(new Color([0, 0, 255]));
-
-
-        // var geometryInput2 = evt.geometry;
-
-        // var graphicViewpoint2 = new Graphic(geometryInput2, Viewpoint2);
-
-        // secondMap.graphics.add(graphicViewpoint2);
-
-
-        // locatePoint(geometryInput2);
-
-
-      };
-
-      function locatePoint(geometryInput, geometryInput2) {
-
-        var locationProvider = new CoordinatesLocationProvider({
-          xField: geometryInput.x,
-          yField: geometryInput.y,
-        });
-
-
-
-        var LatLong = webMercatorUtils.xyToLngLat(geometryInput.x, geometryInput.y);
-
-        console.log("Localización del punto", LatLong);
-
-
-
-        var latAntipoda = -LatLong[1];
-        var longAntipoda;
-
-        if (LatLong[0] < 0) {
-          longAntipoda = LatLong[0] + 180;
-        }
-        else {
-          longAntipoda = LatLong[0] - 180;
-        }
-
-
-
-        var PuntoAntipoda = [longAntipoda, latAntipoda];
-
-        console.log("Localización del punto nuevo, debería ser la antípoda", PuntoAntipoda);
-
-
-
-        var pointpode = new Point([longAntipoda,latAntipoda]);
-
-
-
-        var Viewpoint2 = new SimpleMarkerSymbol();
-        Viewpoint2.setSize(12);
-        Viewpoint2.setOutline(new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255]), 1));
-        Viewpoint2.setColor(new Color([0, 0, 255]));
-        
-        var antipodas = secondMap.graphics.add(pointpode, Viewpoint2);
-
-        secondMap.centerAndZoom(antipodas, 3)
-
-      };
-
-    });
+function(Map, Color, Graphic, SimpleMarkerSymbol, Extent, webMercatorUtils, Point, on) {
+  map = new Map("map", {
+    basemap: "gray-vector",
+    center: [-3.74922, 40.463667],
+    zoom: 1
   });
+  antipodeMap = new Map("antipodeMap", {
+    basemap: "dark-gray-vector",
+    center: [-3.74922, 40.463667],
+    zoom: 1
+  });
+
+  map.on('click', function(evt) {
+    console.log('evt', evt);
+    map.graphics.clear();
+    antipodeMap.graphics.clear();
+
+    const current = evt.mapPoint;
+
+    var pointSymbol = new SimpleMarkerSymbol();
+    pointSymbol.setSize(12);
+    pointSymbol.setColor(new Color([103, 23, 211, 1]));
+
+    var graphic = new Graphic(current, pointSymbol);
+    map.graphics.add(graphic);
+   
+
+    // Antípoda
+    var centerLatLong = webMercatorUtils.xyToLngLat(current.x, current.y);
+
+    var latitud = -centerLatLong[1];
+    var longitud;
+    if (centerLatLong[0] < 0){
+      longitud = centerLatLong[0] + 180;
+    }
+    else{
+      longitud = centerLatLong[0] - 180;
+    }
+   
+    // Opt1 - Transformándolo de nuevo a WebMercator
+    // var center2WebMercator = webMercatorUtils.lngLatToXY(longitud, latitud);
+    // var center2 = new Point(center2WebMercator[0], center2WebMercator[1], map.spatialReference);	
+
+    // Opt2 - Utilizando longitud y latitud
+    var center2 = new Point(longitud, latitud)
+
+    // Simbología Antípodas
+    var antipodeSymbol = new SimpleMarkerSymbol();
+    antipodeSymbol.setSize(12);
+    antipodeSymbol.setColor(new Color([237, 33, 216, 1]));
+
+    var graphicAntipode = new Graphic(center2, antipodeSymbol);
+
+    antipodeMap.centerAndZoom(center2);
+    antipodeMap.graphics.add(graphicAntipode);
+
+  });
+});
