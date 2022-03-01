@@ -2,23 +2,33 @@
 <html>
 
 <head>
-
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Ejercicios para estudiar el examen 2</title>
 
-    <link rel="stylesheet" href="https://js.arcgis.com/3.39/esri/css/esri.css">
-    <script src="https://js.arcgis.com/3.39/"></script>
-    <link rel="stylesheet" href="https://js.arcgis.com/3.39/esri/css/esri.css">
+    <!-- Configure dojo for asynchronous module loading -->
+    <script>
+        var dojoConfig = {
+            async: true
+        };
+    </script>
+
+    <!-- ES DIFERENTE LA VERSION DE APIIII!!!!!!!!!!!!, ES LA 18 Y SOLEMOS USAR LA 39 -->
+    <link rel="stylesheet" href="http://js.arcgis.com/3.18/dijit/themes/nihilo/nihilo.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.18/esri/css/esri.css">
+
+
+    <!-- https://developers.arcgis.com/javascript/3/jshelp/css.html -->
+
+    <script src="http://js.arcgis.com/3.18/"></script>
 
     <script src="RepasoCasa2.js"></script>
+
     <link rel="stylesheet" href="RepasoCasa2.css">
-
-    <style>
-    </style>
-
+    <!-- Reference libraries. The first CSS is a Dojo theme that gives dijits a consistent style. -->
 </head>
 
 <body class="nihilo">
-    <h1 id="title">Terremotos</h1>
+    <h1 id="title"></h1>
     <div id="bcMain" data-dojo-type="dijit/layout/BorderContainer"
         data-dojo-props="design:'sidebar', liveSplitters:'true'">
         <div id="cpLeading" data-dojo-type="dijit/layout/ContentPane"
@@ -38,6 +48,8 @@
             </div>
 
         </div>
+
+
 
     </div>
 </body>

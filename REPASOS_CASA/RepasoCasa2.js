@@ -1,121 +1,75 @@
 //Vamos a crear un web map, añadirle una leyenda y cosas mediante lo de utils
 
+var mapMain;
+var legendLayers;
+var webmapId = "7d987ba67f4640f0869acb82ba064228";
+
 require([
-  "esri/map",
-  "esri/geometry/Extent",
-
-  "esri/layers/FeatureLayer",
-  "esri/layers/ArcGISDynamicMapServiceLayer",
-
-  "esri/dijit/BasemapToggle",
-  "esri/dijit/OverviewMap",
-  "esri/dijit/Legend",
-
+  "dojo/dom",
   "esri/arcgis/utils",
-
-
+  "esri/dijit/Legend",
+  "esri/dijit/Scalebar",
+  "esri/dijit/BasemapGallery",
   "dojo/ready",
-  "dojo/parser",
-  "dojo/on",
-  "dojo/domReady!",],
-
+  "dojo/parser"],
   function (
-    Map,
-    Extent,
-
-    FeatureLayer,
-    ArcGISDynamicMapServiceLayer,
-
-
-    BasemapToggle,
-    OverviewMap,
-    Legend,
-
-    utils,
-
-
-    ready,
-    parser,
-    on,
-
-
-  ) {
+    dom, 
+    arcgisUtils, 
+    Legend, 
+    Scalebar, 
+    BasemapGallery, 
+    ready, 
+    parser) {
 
     ready(function () {
-
       parser.parse();
 
-      //Creamos el mapa
+      arcgisUtils.createMap(webmapId,"divMap").then(function(response){
 
-      var mapMain = new Map("divMap", {
-        extent: new Extent({
-          xmin: -14984446.002985604,
-          ymin: 3583338.3730520504,
-          xmax: -11227413.188713621,
-          ymax: 5349339.474552293,
-          spatialReference: {
-            wkid: 102100
-          }
-        }),
-        basemap: "topo",
-      });
+        console.log(response);
 
+        //Añadimos la leyenda, primero sacamos las capas y segundo se las metemos a la leyenda
 
+        var legendLayers = arcgisUtils.getLegendLayers(response);
+        console.log('capasLeyenda', legendLayers);
 
-      //Vamos a meter capas: un FL y un ARCGIS Dynamic Service Layer
+        mapMain = response.map
 
-      var terremotosFL = new FeatureLayer("http://services.arcgis.com/ue9rwulIoeLEI9bj/arcgis/rest/services/Earthquakes/FeatureServer/0", {
-        outFields: ["*"]
-      });
-
-      var USADynamic = new ArcGISDynamicMapServiceLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer", {
-        "opacity": 0.75,
-        "visible": true,
-      });
-
-      //Vamos a definir unos metodos para ambas capas
-
-      USADynamic.setVisibleLayers([2, 3]);
-
-      terremotosFL.setDefinitionExpression("MAGNITUDE > 1.5");
-
-      mapMain.addLayers([terremotosFL, USADynamic]);
-
-      //A continuación vamos a establecer un toogle para cambiar el mapa, establecer una leyenda y un overview
-
-      var basemapToggle = new BasemapToggle({
-        map: mapMain,
-        visible: true,
-        basemap: "dark-gray"
-      }, "widget");
-      basemapToggle.startup();
-
-      var overviewMap = new OverviewMap({
-        map: mapMain,
-        attachTo: "bottom-right",
-        color: " #D84E13",
-        visible: true,
-        opacity: .40
-      }); overviewMap.startup();
-
-      mapMain.on("layers-add-result", function () {
-
-        var legend = new Legend({
+        var leyenda = new Legend({
           map: mapMain,
-          arrangement: Legend.ALIGN_RIGHT,
-          layerInfos: [{
-            layer: terremotosFL,
-            title: 'Terremotos'
-          }, {
-            layer: USADynamic,
-            title: 'EEUU'
-          }]
-        }, "divLegend");
-        legend.startup();
+          layerInfos: legendLayers
+        },"divLegend");
+        leyenda.startup();
+
+        //Ahora le metemos titulo y barra de escala
+
+        var titulo = response.itemInfo.item.title;
+        dom.byId("title").innerHTML = titulo;
+
+        
+        var escala = new Scalebar({
+          map: response.map,
+          attachTo: "top-left",
+          scalebarUnit: "metric" });
+        
+
+        //Por último vamos a introducir la galería de mapas base de ESRI
+
+        var galeriaMapasBase = new BasemapGallery({
+          showArcGISBasemaps: true,
+          map: mapMain,
+          attachTo: "top-right",
+        }, "basemapGallery");
+        galeriaMapasBase.startup();
+
+      }
+      
+      )
 
 
-      });
+
+
 
     });
 
-  })
+  });

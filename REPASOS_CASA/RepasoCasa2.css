@@ -1,4 +1,4 @@
-html, body, #map, #cpCenter {
+html, body, #map, #divMap {
     height: 100%;
     width: 100%;
    
@@ -24,6 +24,13 @@ body {
     top: 20px;
     right: 20px;
     z-index: 50;
+}
+
+#title{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 
