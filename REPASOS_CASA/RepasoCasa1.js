@@ -1,4 +1,4 @@
-
+//Vamos a crear un mapa, añadirle unas capas, meterle un par de toolbars y una leyenda
 require([
   "esri/map",
   "esri/geometry/Extent",
@@ -10,7 +10,7 @@ require([
   "esri/dijit/OverviewMap",
   "esri/dijit/Legend",
 
-
+  
   "dojo/ready",
   "dojo/parser",
   "dojo/on",
