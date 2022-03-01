@@ -13,6 +13,9 @@ require([
   "esri/dijit/OverviewMap",
   "esri/dijit/Legend",
 
+
+  "esri/dijit/Search",
+
   
   "dojo/ready",
   "dojo/parser",
@@ -30,6 +33,8 @@ require([
     BasemapToggle,
     OverviewMap,
     Legend,
+
+    Search,
 
 
     ready,
@@ -113,6 +118,14 @@ require([
 
 
       });
+
+      //Añadimos el widget de busqueda
+
+      var buscar = new Search({
+        map: mapMain,
+        autocomplete: true,
+      },"divSearch");
+      buscar.startup();
 
     });
 
