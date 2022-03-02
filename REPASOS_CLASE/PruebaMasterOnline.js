@@ -256,13 +256,40 @@ require([
 
 
     //Boton ir al estado
-    on(dojo.byId("progButtonNode"), "click", fQueryEstados);
+    // on(dojo.byId("progButtonNode"), "click", fQueryEstados);
 
 
-    function fQueryEstados() {
+    // function fQueryEstados() {
+    //   var inputState = dom.byId("dtb").value;
+
+    //   var line = new SimpleLineSymbol();
+    //   line.setColor(new Color([0, 0, 0, 1]));
+    //   var fill = new SimpleFillSymbol();
+    //   fill.setOutline(line);
+    //   fill.setColor(new Color([0, 230, 169, 0.38]));
+
+    //   var simbologiaEstado = fill, line;
+
+    //   Estados.setSelectionSymbol(simbologiaEstado)
+
+    //   var queryState = new Query();
+    //   queryState.Where = `state_name = ${inputState}`;
+
+    //   Estados.selectFeatures(
+    //     queryState,
+    //     FeatureLayer.SELECTION_NEW,
+    //     gtToState
+    //   )
       
     
-    }
+    // }
+
+    // function gtToState(selection){
+    //   var centerSt = graphicsUtils.graphicExtent(selection).getCenter();
+    //   var extentST = esri.graphicsExtent(selection);
+
+    //   setExtent(extentST.getExtent().expand(2));
+    // }
 
 
 
