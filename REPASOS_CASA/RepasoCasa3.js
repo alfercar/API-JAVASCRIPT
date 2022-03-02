@@ -1,5 +1,5 @@
 //VIENE DEL REPASO 1
-//Continuando con lo visto en el repaso 1 vamos a crear mas cosas: un locator task, un widget de busqueda, ...
+//Continuando con lo visto en el repaso 1 vamos a crear mas cosas: un locator task, un widget de busqueda, locator task, crearemos un select features para un query data y renderizaremos
 
 
 require([
@@ -36,6 +36,7 @@ require([
   "esri/renderers/SimpleRenderer",
   "esri/renderers/ClassBreaksRenderer",
   "esri/layers/LayerDrawingOptions",
+  
 
 
   "dojo/ready",
@@ -478,7 +479,7 @@ require([
       ////Ahora vamos con los popups
 
 
-      
+
 
 
 
