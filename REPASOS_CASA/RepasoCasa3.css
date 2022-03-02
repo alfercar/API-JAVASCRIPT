@@ -1,4 +1,4 @@
-html, body, #myMap {
+html, body, #divMap {
     height: 100%;
     width: 100%;
     margin: 0;
@@ -40,6 +40,57 @@ body {
     z-index: 2;
     top: 25px;
     left: 75px;
+}
+
+#cpHeader {
+    height: auto;
+}
+
+#taAddress {
+    height: 20px;
+    width: 250px;
+    vertical-align: middle;
+}
+
+
+#divRenderer {
+    position:static;
+    left: 27px;
+    bottom: 27px;
+   
+    
+}
+
+#cpBottom {
+    height: 100px;
+}
+
+#divGrid {
+    height: 100%;
+}
+
+.dgrid {
+    border: none;
+}
+
+.field-eqid {
+    width: 100px;
+}
+
+.field-datetime {
+    width: 160px;
+}
+
+.field-magnitude {
+    width: 60px;
+}
+
+.field-longitude {
+    width: 100px;
+}
+
+.field-latitude {
+    width: 100%;
 }
 
 

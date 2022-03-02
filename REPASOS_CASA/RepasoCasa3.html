@@ -24,11 +24,22 @@
             data-dojo-props="splitter:'true', region:'leading'">
             <div id="divLegend"></div>
         </div>
+        <div id="cpHeader" align="right" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
+            <textarea id="taAddress" type="text">San Diego</textarea>
+            <button id="btnLocate">Locate</button>
+        </div>
         <div id="divMap" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
             <div id="BasemapToggle"></div>
             <div id="widget"></div>
             <div id="divSearch"></div>
+            <div id="divRenderer">
+                <button id="progButtonNode" type="button" style="visibility:visible;">Renderizar</button>
+            </div>
 
+        </div>
+
+        <div id="cpBottom" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="splitter:'true', region:'bottom'">
+            <div id="divGrid"></div>
         </div>
 </body>
 
