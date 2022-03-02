@@ -102,7 +102,7 @@ require([
     //PopUps
 
     var popupUSA = new InfoTemplate(
-      "Estado: ${state_name}", "Población: ${pop2000}<br>Población por milla cuadrada: ${pop00_sqmi}<br>Área: ${st_area(shape)}");
+      "${state_name}", "Población: ${pop2000}<br>Población por milla cuadrada: ${pop00_sqmi}<br>Área: ${st_area(shape)}");
 
     var outfieldsUSAlayer = ["*"];
 
@@ -120,7 +120,7 @@ require([
       "opacity": 0.5,
     });
 
-    USAlayer.setVisibleLayers([1, 3]);
+    USAlayer.setVisibleLayers([1,3]);
 
 
 
@@ -260,7 +260,8 @@ require([
 
 
     function fQueryEstados() {
-      console.log("Evento del botón Ir a estado");
+      
+    
     }
 
 
