@@ -1,4 +1,8 @@
-//Vamos a crear un mapa, añadirle unas capas, meterle un par de toolbars y una leyenda
+//Vamos a crear un mapa, añadirle unas capas, meterle un par de toolbars y una leyenda. Tambien haremos un popup y un analisis de rutas
+
+
+
+
 require([
   "esri/map",
   "esri/geometry/Extent",
@@ -10,7 +14,11 @@ require([
   "esri/dijit/OverviewMap",
   "esri/dijit/Legend",
 
-  
+
+  "esri/dijit/PopupTemplate",
+
+  "esri/dijit/Directions",
+
   "dojo/ready",
   "dojo/parser",
   "dojo/on",
@@ -28,6 +36,9 @@ require([
     OverviewMap,
     Legend,
 
+    PopupTemplate,
+
+    Directions,
 
     ready,
     parser,
@@ -59,8 +70,17 @@ require([
 
       //Vamos a meter capas: un FL y un ARCGIS Dynamic Service Layer
 
+
+      outfieldTerremotos = ["*"]
+
+      var PopUp = new PopupTemplate({
+        title: "Magintud: {MAGNITUDE}",
+        description: "Se encuentra localizado en: {PLACE}"
+      })
+
       var terremotosFL = new FeatureLayer("http://services.arcgis.com/ue9rwulIoeLEI9bj/arcgis/rest/services/Earthquakes/FeatureServer/0", {
-        outFields: ["*"]
+        outFields: ["*"],
+        infoTemplate: PopUp,
       });
 
       var USADynamic = new ArcGISDynamicMapServiceLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer", {
@@ -110,6 +130,16 @@ require([
 
 
       });
+
+
+      //ahora vamos con el análisis de redes
+
+      // var directions = new Directions({
+      //   map: mapMain,
+      //   routeTaskurl: "http://utility.arcgis.com/usrsvcs/appservices/OM1GNiiACNJceMRn/rest/services/World/Route/NAServer/Route_World"
+      // }, "divDirections");
+
+      // directions.startup();
 
     });
 

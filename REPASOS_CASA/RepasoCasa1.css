@@ -1,6 +1,6 @@
 
 
-html, body, #myMap {
+html, body, #divMap {
     height: 100%;
     width: 100%;
     margin: 0;
@@ -33,6 +33,10 @@ body {
 }
 
 #cpLeading {
+    width: 117px;
+}
+
+#cpRight{
     width: 117px;
 }
 
