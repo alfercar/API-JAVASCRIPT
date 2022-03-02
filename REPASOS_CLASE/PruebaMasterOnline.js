@@ -20,6 +20,18 @@ require([
   "esri/layers/FeatureLayer",
 
 
+  "esri/symbols/SimpleFillSymbol",
+  "esri/symbols/SimpleLineSymbol",
+  "esri/symbols/SimpleMarkerSymbol",
+  "esri/symbols/Font",
+  "esri/symbols/TextSymbol",
+  "esri/graphic",
+  "dojo/_base/Color",
+
+  "esri/toolbars/draw",
+  "esri/tasks/query",
+
+
   "dojo/dom",
   "dojo/on",
 
@@ -43,6 +55,17 @@ require([
     InfoTemplate,
     FeatureLayer,
 
+    SimpleFillSymbol,
+    SimpleLineSymbol,
+    SimpleMarkerSymbol,
+    Font,
+    TextSymbol,
+    Graphic,
+    Color,
+
+    draw,
+    Query,
+
     dom,
     on
 
@@ -51,32 +74,23 @@ require([
 
 
 
-    on(dojo.byId("pintaYQuery"), "click", fPintaYQuery);
-    on(dojo.byId("progButtonNode"), "click", fQueryEstados);
 
-    function fPintaYQuery() {
-      alert("Evento del botón Seleccionar ciudades");
-    }
-
-    function fQueryEstados() {
-      alert("Evento del botón Ir a estado");
-    }
 
     //Mapa y layers
 
     mapMain = new Map("map", {
       basemap: "topo",
       extent: new Extent({
-        xmin: -14874440.37429713,
-        ymin: 2883942.6450752337,
-        xmax: -7360374.745753162,
-        ymax: 6415944.84807572,
+        xmin: -26680721.03095156,
+        ymin: 1397764.0679305727,
+        xmax: 3375541.4832243174,
+        ymax: 15525772.879932515,
         spatialReference: {
           wkid: 102100
         }
       }),
-      center: [-97.092027, 40.451156], // long, lat
-      zoom: 4,
+      center: [-104.817618, 59.997364], // long, lat
+      zoom: 3,
       sliderStyle: "small"
     });
 
@@ -87,10 +101,8 @@ require([
 
     //PopUps
 
-
-
     var popupUSA = new InfoTemplate(
-      "Estado: ${state_name}", "Población: ${pop2000}<br>Population por milla cuadrada: ${pop00_sqmi}<br>Área: ${st_area(shape)}");
+      "Estado: ${state_name}", "Población: ${pop2000}<br>Población por milla cuadrada: ${pop00_sqmi}<br>Área: ${st_area(shape)}");
 
     var outfieldsUSAlayer = ["*"];
 
@@ -102,15 +114,19 @@ require([
       "infoTemplate": popupUSA,
     });
 
+    var Ciudades = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0");
+
     var USAlayer = new ArcGISDynamicMapServiceLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer", {
       "opacity": 0.5,
     });
+
+    USAlayer.setVisibleLayers([1, 3]);
 
 
 
     //Añadir capa al mapa
 
-    mapMain.addLayers([USAlayer, Estados]);
+    mapMain.addLayers([Ciudades, Estados, USAlayer]);
 
     //Leyenda
 
@@ -120,6 +136,12 @@ require([
         map: mapMain,
         arrangement: Legend.ALIGN_LEFT,
         layerInfos: [{
+          layer: Ciudades,
+          title: 'Ciudades'
+        }, {
+          layer: Estados,
+          title: 'Estados'
+        }, {
           layer: USAlayer,
           title: 'American Things'
         }]
@@ -163,6 +185,83 @@ require([
       scalebarUnit: "metric"
     });
 
+
+
+
+    //Herramienta de dibujo
+
+    on(dojo.byId("pintaYQuery"), "click", fPintaYQuery);
+
+    function fPintaYQuery() {
+      console.log("Evento del botón Seleccionar ciudades");
+
+      var dibujo = new draw(mapMain, {
+        tolerance: 10,
+        tooltipOffset: 20,
+        drawTime: 10
+      });
+
+      dibujo.activate(draw.POLYGON);
+
+      dibujo.on("draw-complete", QueryPoligono);
+
+    }
+
+    function QueryPoligono(evt) {
+
+      mapMain.graphics.clear();
+
+      var geometryInput = evt.geometry;
+
+      var line = new SimpleLineSymbol();
+      line.setColor(new Color([0, 0, 0, 1]));
+      var fill = new SimpleFillSymbol();
+      fill.setOutline(line);
+      fill.setColor(new Color([0, 230, 169, 0.38]));
+
+      var simbologiaPoligono = fill, line
+
+      var poligono = new Graphic(geometryInput, simbologiaPoligono);
+
+      mapMain.graphics.add(poligono);
+
+      CiudadesSeleccion(geometryInput);
+
+      function CiudadesSeleccion(geometryInput) {
+
+        var simbologia2 = new SimpleMarkerSymbol({
+          "type": "esriSMS",
+          "style": "esriSMSCircle",
+          "color": [0, 0, 255, 128],
+          "size": 7,
+          "outline": {
+            "color": [255, 255, 255, 214],
+            "width": 1
+          }
+        });
+
+        var seleccion = new Query();
+        seleccion.geometry = geometryInput;
+        seleccion.outfields = ["*"];
+
+        Ciudades.selectFeatures(seleccion);
+        Ciudades.setSelectionSymbol(simbologia2)
+      }
+
+
+
+
+
+    }
+
+
+    //Boton ir al estado
+    on(dojo.byId("progButtonNode"), "click", fQueryEstados);
+
+
+    function fQueryEstados() {
+      console.log("Evento del botón Ir a estado");
+    }
 
 
 
