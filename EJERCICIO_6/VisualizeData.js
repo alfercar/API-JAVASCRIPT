@@ -97,7 +97,7 @@ require([
                 quakeSymbol.setColor(new Color([0, 0, 255, 0.75]));
                 quakeSymbol.setOutline(null);
 
-
+v
                 /*
                  * Step: Construct and apply a simple renderer for earthquake features
                  */
