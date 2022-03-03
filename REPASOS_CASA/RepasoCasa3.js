@@ -36,7 +36,7 @@ require([
   "esri/renderers/SimpleRenderer",
   "esri/renderers/ClassBreaksRenderer",
   "esri/layers/LayerDrawingOptions",
-  
+
 
 
   "dojo/ready",
@@ -355,8 +355,6 @@ require([
         }
 
 
-
-
       }
 
 
@@ -400,90 +398,83 @@ require([
         var symDefault5 = new SimpleFillSymbol().setColor(new Color([100, 30, 22, 1]));
 
 
-        var renderizador = new ClassBreaksRenderer(symDefault,"pop00_sqmi");
+        var renderizador = new ClassBreaksRenderer(symDefault, "pop00_sqmi");
 
         renderizador.addBreak({
 
           minValue: 0,
-        
+
           maxValue: 10,
-        
+
           symbol: symDefault1,
-        
+
           label: "Low Density"
-        
+
         });
 
         renderizador.addBreak({
 
           minValue: 10,
-        
+
           maxValue: 100,
-        
+
           symbol: symDefault2,
-        
+
           label: "Low-Mid Density"
-        
+
         });
 
         renderizador.addBreak({
 
           minValue: 100,
-        
+
           maxValue: 1000,
-        
+
           symbol: symDefault3,
-        
+
           label: "Mid Density"
-        
+
         });
 
         renderizador.addBreak({
 
           minValue: 1000,
-        
+
           maxValue: 10000,
-        
+
           symbol: symDefault4,
-        
+
           label: "High-Mid Density"
-        
+
         });
 
         renderizador.addBreak({
 
           minValue: 10000,
-        
+
           maxValue: 100000,
-        
+
           symbol: symDefault5,
-        
+
           label: "High Density"
-        
+
         });
 
 
         var OpcionesRenderizado = [];
+       
 
         var OpcionRenderizado = new LayerDrawingOptions
 
         OpcionRenderizado.renderer = renderizador;
+     
 
-        OpcionesRenderizado[3]=OpcionRenderizado;
+        OpcionesRenderizado[3] = OpcionRenderizado;
+        console.log("Render", OpcionRenderizado)
 
         USADynamic.setLayerDrawingOptions(OpcionesRenderizado);
 
       }
-
-
-      ////Ahora vamos con los popups
-
-
-
-
-
-
-
 
 
     });
