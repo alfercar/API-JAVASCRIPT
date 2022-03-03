@@ -13,18 +13,18 @@ require([
   "dojo/ready",
   "dojo/parser"],
   function (
-    dom, 
-    arcgisUtils, 
-    Legend, 
-    Scalebar, 
-    BasemapGallery, 
-    ready, 
+    dom,
+    arcgisUtils,
+    Legend,
+    Scalebar,
+    BasemapGallery,
+    ready,
     parser) {
 
     ready(function () {
       parser.parse();
 
-      arcgisUtils.createMap(webmapId,"divMap").then(function(response){
+      arcgisUtils.createMap(webmapId, "divMap").then(function (response) {
 
         console.log(response);
 
@@ -38,7 +38,7 @@ require([
         var leyenda = new Legend({
           map: mapMain,
           layerInfos: legendLayers
-        },"divLegend");
+        }, "divLegend");
         leyenda.startup();
 
         //Ahora le metemos titulo y barra de escala
@@ -46,12 +46,13 @@ require([
         var titulo = response.itemInfo.item.title;
         dom.byId("title").innerHTML = titulo;
 
-        
+
         var escala = new Scalebar({
           map: response.map,
           attachTo: "top-left",
-          scalebarUnit: "metric" });
-        
+          scalebarUnit: "metric"
+        });
+
 
         //Por último vamos a introducir la galería de mapas base de ESRI
 
@@ -63,7 +64,7 @@ require([
         galeriaMapasBase.startup();
 
       }
-      
+
       )
 
 
