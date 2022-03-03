@@ -74,9 +74,22 @@ require([
       outfieldTerremotos = ["*"]
 
       var PopUp = new PopupTemplate({
-        title: "Magintud: {MAGNITUDE}",
-        description: "Se encuentra localizado en: {PLACE}"
-      })
+        title: "Descripción del temblor",
+        fieldInfos: [{
+          fieldName: "MAGNITUDE",
+          label: "Magnitud:",
+          visible: true
+        }, {
+          fieldName: "PLACE",
+          label: "Se encuentra localizado en:",
+          visible: true
+        }, {
+          fieldName: "UTC_DATETIME",
+          label: "Cuando fue: ",
+          visible: true,
+          format: { places: 0 }
+        }]
+      });
 
       var terremotosFL = new FeatureLayer("http://services.arcgis.com/ue9rwulIoeLEI9bj/arcgis/rest/services/Earthquakes/FeatureServer/0", {
         outFields: ["*"],
