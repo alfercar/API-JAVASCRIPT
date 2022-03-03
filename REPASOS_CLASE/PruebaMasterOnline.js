@@ -74,10 +74,6 @@ require([
   ) {
 
 
-
-
-
-
     //Mapa y layers
 
     mapMain = new Map("map", {
