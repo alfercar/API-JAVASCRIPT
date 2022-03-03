@@ -31,6 +31,8 @@ require([
   "esri/toolbars/draw",
   "esri/tasks/query",
 
+  "esri/graphicsUtils",
+
 
   "dojo/dom",
   "dojo/on",
@@ -65,6 +67,8 @@ require([
 
     draw,
     Query,
+
+    graphicsUtils,
 
     dom,
     on
@@ -120,7 +124,7 @@ require([
       "opacity": 0.5,
     });
 
-    USAlayer.setVisibleLayers([1,3]);
+    USAlayer.setVisibleLayers([1, 3]);
 
 
 
@@ -255,45 +259,37 @@ require([
     }
 
 
-    //Boton ir al estado
-    // on(dojo.byId("progButtonNode"), "click", fQueryEstados);
+    ////Boton ir al estado
+    on(dojo.byId("progButtonNode"), "click", fQueryEstados);
 
 
-    // function fQueryEstados() {
-    //   var inputState = dom.byId("dtb").value;
+    function fQueryEstados() {
+      // Guardamos el valor del input
+      var inputState = dojo.byId("dtb").value;
 
-    //   var line = new SimpleLineSymbol();
-    //   line.setColor(new Color([0, 0, 0, 1]));
-    //   var fill = new SimpleFillSymbol();
-    //   fill.setOutline(line);
-    //   fill.setColor(new Color([0, 230, 169, 0.38]));
+      // Definimos una simbología para los estados seleccionados
+      var sbState = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+        new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
+          new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.5])
+      );
 
-    //   var simbologiaEstado = fill, line;
+      // Aplicamos la simbología a los estados seleccionados
+      Estados.setSelectionSymbol(sbState);
 
-    //   Estados.setSelectionSymbol(simbologiaEstado)
+      // Definimos la consulta
+      var queryState = new Query();
+      queryState.where = `state_name = '${inputState}'`;
+      Estados.selectFeatures(
+        queryState, // Aplicamos la clausula Where de la consulta
+        FeatureLayer.SELECTION_NEW, // Marcamos como nueva selección
+        function (selection) { // Función para hacer zoom al estado
+          var centerSt = graphicsUtils.graphicsExtent(selection).getCenter();
+          var extentSt = esri.graphicsExtent(selection);
 
-    //   var queryState = new Query();
-    //   queryState.Where = `state_name = ${inputState}`;
-
-    //   Estados.selectFeatures(
-    //     queryState,
-    //     FeatureLayer.SELECTION_NEW,
-    //     gtToState
-    //   )
-      
-    
-    // }
-
-    // function gtToState(selection){
-    //   var centerSt = graphicsUtils.graphicExtent(selection).getCenter();
-    //   var extentST = esri.graphicsExtent(selection);
-
-    //   setExtent(extentST.getExtent().expand(2));
-    // }
-
-
-
-
+          mapMain.setExtent(extentSt.getExtent().expand(2));
+          mapMain.centerAt(centerSt);
+        });
+    };
 
 
   });
