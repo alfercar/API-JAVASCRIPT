@@ -9,18 +9,27 @@ require([
   "esri/layers/FeatureLayer",
   "esri/layers/ArcGISDynamicMapServiceLayer",
 
+  "esri/dijit/BasemapToggle",
+  "esri/dijit/OverviewMap",
+
   "esri/graphic",
+  "esri/geometry/Multipoint",
   "esri/symbols/SimpleFillSymbol",
   "esri/symbols/SimpleLineSymbol",
   "esri/symbols/SimpleMarkerSymbol",
   "dojo/_base/Color",
-  "dojo/_base/declare",
+  // "dojo/_base/declare",
   "dojo/_base/array",
 
 
   "esri/tasks/ServiceAreaTask",
   "esri/tasks/ServiceAreaParameters",
   "esri/tasks/FeatureSet",
+
+  "esri/tasks/query",
+
+
+  "esri/tasks/ServiceAreaSolveResult",
 
 
   "dojo/domReady!"],
@@ -32,17 +41,25 @@ require([
     FeatureLayer,
     ArcGISDynamicMapServiceLayer,
 
+    BasemapToggle,
+    OverviewMap,
+
     Graphic,
+    Multipoint,
     SimpleFillSymbol,
     SimpleLineSymbol,
     SimpleMarkerSymbol,
     Color,
-    declare,
+    // declare,
     array,
 
     ServiceAreaTask,
     ServiceAreaParameters,
     FeatureSet,
+
+    Query,
+
+    ServiceAreaSolveResult,
 
 
 
@@ -63,63 +80,98 @@ require([
 
     });
 
-    var CentrosSalud = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/CENTROS_SALUD_AFC/FeatureServer/0");
+    var CentrosSalud = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/CENTROS_SALUD_AFC/FeatureServer/0", {
+      outFields: ["*"],
+    });
+
+
 
     mapMain.addLayers([CentrosSalud]);
 
-    var serviceAreaTask = new ServiceAreaTask("https://formacion.esri.es/server/rest/services/RedMadrid/NAServer/Service%20Area")
-    console.log(serviceAreaTask)
+    var basemapToggle = new BasemapToggle({
+      map: mapMain,
+      visible: true,
+      basemap: "dark-gray"
+    }, "widget");
+    basemapToggle.startup();
 
+    var overviewMap = new OverviewMap({
+      map: mapMain,
+      attachTo: "bottom-left",
+      color: [" #D84E13"],
+      visible: true,
+      opacity: .40
+    }); overviewMap.startup();
+
+
+    var serviceAreaTask = new ServiceAreaTask("https://formacion.esri.es/server/rest/services/RedMadrid/NAServer/Service%20Area")
+    console.log(serviceAreaTask);
+
+
+    console.log("centros", CentrosSalud)
 
     mapMain.on("layers-add-result", TareaServicios);
+
 
     function TareaServicios() {
       console.log("buenos dias");
 
+
+      var seleccion = new Query();
+
+      seleccion.where = "1 = 1";
+      seleccion.outfields = "*"
+
+      CentrosSalud.selectFeatures(seleccion);
+
+      CentrosSalud.on("selection-complete", ServiceAreaPolygons);
+      console.log(seleccion)
+
+
+
+      var graphic = new Graphic(CentrosSalud)
+      var featureSET= [];
+
+      featureSET.push(graphic);
+
+      var centrosMadrid = new FeatureSet();
+
+      centrosMadrid.features = featureSET;
+
+      centrosMadrid.facilities = centrosMadrid;
+
+      var puntos = centrosMadrid.features[0].geometry.graphics  
+      console.log("puntos",puntos)
+
+
+      
+      function ServiceAreaPolygons(){
+
+
       var params = new ServiceAreaParameters();
 
-      params.defaultBreaks = [1, 2, 3, 4];
+      params.defaultBreaks = [3];
 
       params.outSpatialReference = mapMain.spatialReference;
 
-      params.returnFacilities = false;
+      params.returnFacilities = true;
 
-      //params.impedanceAttribute = TiempoPie;
+      params.impedanceAttribute = "TiempoPie"
 
 
-
-      var facilities = new FeatureSet();
-
-      facilities.features = CentrosSalud;
-
-      paramsfacilities = facilities;
+      console.log("params", params);}
 
 
 
-      console.log("params", params);
-      console.log("facilities", facilities);
-      console.log("paramsfacilities", paramsfacilities);
+      serviceAreaTask.solve(params, function (Resultsolve) {
 
-      serviceAreaTask.solve(params, function (solveResult) {
+        // featureSET.forEach(serviceAreaSolveResult.serviceAreaPolygons, function (graphic) {
+        //   mapMain.graphics.add(graphic);
+        // });
 
-        var polygonSymbol = new SimpleFillSymbol(
-          "solid",
-          new SimpleLineSymbol("solid", new Color([232, 104, 80]), 2),
-          new Color([232, 104, 80, 0.25])
-        );
-
-        arrayUtils.forEach(solveResult.serviceAreaPolygons, function (serviceArea) {
-          serviceArea.setSymbol(polygonSymbol);
-          mapMain.graphics.add(serviceArea);
-        });
-
-
-      }, function (err) {
-        console.log(err.message);
-      });
-
-
-
+      }, function (error) {
+        console.log("Ha ocurrido un error");
+      })
 
     }
 
