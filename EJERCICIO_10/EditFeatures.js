@@ -75,6 +75,8 @@ require([
 
         // Map the event results into an array of layerInfo objects
 
+        //Hay que hacer 2 arrays para el editor y para el template picker
+
         //Hace un array de los elementos
 
 
