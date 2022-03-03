@@ -1,7 +1,5 @@
 
-
 var mapMain;
-
 var tb;
 
 
