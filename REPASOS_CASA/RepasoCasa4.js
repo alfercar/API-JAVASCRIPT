@@ -31,7 +31,7 @@ require([
   "dojo/on",
   "dojo/_base/array"],
   function (
-    Map, Geoprocessor, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Color, Graphic,graphicsUtils, FeatureSet, LinearUnit,
+    Map, Geoprocessor, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Color, Graphic, graphicsUtils, FeatureSet, LinearUnit,
 
     FeatureLayer,
 
@@ -122,6 +122,7 @@ require([
         sfsResultPolygon.setColor(new Color([255, 127, 0, 0.5]));
 
         var arrayFeatures = results.results[0].value.features;
+        console.log("arrayfeatures", arrayFeatures)
 
         array.forEach(arrayFeatures, function (feature) {
 
