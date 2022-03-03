@@ -111,6 +111,25 @@ require([
     var outfieldsUSAlayer = ["*"];
 
 
+    // var popupStates = new PopupTemplate({
+    //   title: "Estado de {state_name}, {state_abbr}",
+    //   fieldInfos: [{
+    //     fieldName: "pop2000",
+    //     label: "Población:",
+    //     visible: true
+    //   }, {
+    //     fieldName: "pop00_sqmi",
+    //     label: "Población por sqmi:",
+    //     visible: true
+    //   }, {
+    //     fieldName: "ss6.gdb.States.area",
+    //     label: "Area en sqmi:",
+    //     visible: true,
+    //     format: {places: 0}
+    //   }]
+    // });
+
+
     //Capas
 
     var Estados = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/2", {
