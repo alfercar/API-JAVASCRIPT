@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+  <title>Basic Service Area</title>
+  
+  <link rel="stylesheet" href="https://js.arcgis.com/3.35/dijit/themes/claro/claro.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.35/esri/css/esri.css">
+  <style> 
+    body, html, #main { 
+      margin: 0; 
+      padding: 0; 
+      height: 100%; 
+      width: 100%;
+    }
+    #calculateBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+    }
+  </style> 
+  
+  <script src="https://js.arcgis.com/3.35/"></script>
+  <script>
+    var map, serviceAreaTask, params, clickpoint;
+
+require([
+  "esri/map", "esri/config", 
+  "esri/tasks/ServiceAreaTask", "esri/tasks/ServiceAreaParameters", "esri/tasks/FeatureSet",
+  "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol",
+  "esri/geometry/Point", "esri/graphic",
+  "dojo/parser", "dojo/dom", "dojo/on",
+  "dijit/registry", 
+  "esri/Color", "dojo/_base/array",
+
+  "esri/geometry/Extent", "esri/layers/FeatureLayer", "esri/tasks/query",
+
+
+  "dijit/layout/BorderContainer", "dijit/layout/ContentPane", 
+  "dijit/form/HorizontalRule", "dijit/form/HorizontalRuleLabels", "dijit/form/HorizontalSlider",
+  "dojo/domReady!"
+], function(
+  Map, esriConfig, 
+  ServiceAreaTask, ServiceAreaParameters, FeatureSet, 
+  SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+  Point, Graphic,
+  parser, dom, on, registry,
+  Color, arrayUtils,
+  Extent, FeatureLayer, Query
+) {
+  parser.parse();
+
+  esriConfig.defaults.io.proxyUrl = "/proxy/";
+  
+  map = new Map("map", { 
+    basemap: "gray-vector",
+    extent : new Extent({
+      "xmin": -416931.9561812914,
+      "ymin": 4921829.913495705,
+      "xmax": -406068.3435362753,
+      "ymax": 4929827.137580031,
+      "spatialReference": {
+        "wkid": 102100,
+      }
+    })
+  });
+
+
+  params = new ServiceAreaParameters();
+  params.outSpatialReference = map.spatialReference;
+  params.returnFacilities = false;
+
+  serviceAreaTask = new ServiceAreaTask("https://formacion.esri.es/server/rest/services/RedMadrid/NAServer/Service%20Area");
+        
+  const centros = new FeatureLayer("https://services5.arcgis.com/hZQQbQb2B2y1Wd2F/arcgis/rest/services/CENTROS_SALUD/FeatureServer/0", {
+    outFields: ['*']
+  });
+  map.addLayer(centros);
+
+  var query = new Query();
+  query.where = '1=1';
+
+  on(dom.byId('calculateBtn'), 'click', calculateSA);
+
+  function calculateSA(){
+    console.log('calculateSA')
+    centros.selectFeatures(query, FeatureLayer.SELECTION_NEW);
+  };
+  
+
+  centros.on("selection-complete", getServicesArea);
+
+  // Simbología
+  var lejosSymbol = new SimpleFillSymbol(
+    "solid",  
+    new SimpleLineSymbol("solid", new Color([232,104,80]), 2),
+    new Color([232,104,80,0.25])
+  );
+  var mediaSymbol = new SimpleFillSymbol(
+    "solid",  
+    new SimpleLineSymbol("solid", new Color([255,164,32]), 2),
+    new Color([255,255,0,0.25])
+  );
+  var cercaSymbol = new SimpleFillSymbol(
+    "solid",  
+    new SimpleLineSymbol("solid", new Color([0, 255, 0]), 2),
+    new Color([0, 255, 0, 0.25])
+  );
+
+  function getServicesArea(centrosSalud){
+    const centrosArray = centrosSalud.features;
+
+    arrayUtils.forEach(centrosArray, function(centro){
+      var facilities = new FeatureSet();
+      var features = [];
+      features.push(centro);
+      facilities.features = features;
+      params.facilities = facilities;
+      params.impedanceAttribute = "TiempoPie";
+      const areasTime = [3, 5, 10];
+      
+      areasTime.forEach(time => {
+        params.defaultBreaks = [time]; // DefaultsBreaks espera un array
+        console.log('params', params)
+        serviceAreaTask.solve(params,function(solveResult){ // Se ejecuta el método para cada tiempo del array
+         
+          arrayUtils.forEach(solveResult.serviceAreaPolygons, function(serviceArea){
+            // Aplicamos una simbología distinta para cada tiempo
+            if (time === areasTime[0]){
+              serviceArea.setSymbol(cercaSymbol);
+              map.graphics.add(serviceArea);
+            } else if (time === areasTime[1]){
+              serviceArea.setSymbol(mediaSymbol);
+              map.graphics.add(serviceArea);
+            } else {
+              serviceArea.setSymbol(lejosSymbol);
+              map.graphics.add(serviceArea);
+            }
+          });
+        });
+      })
+    });
+  };
+});
+  </script>
+</head>
+
+<body class="claro"> 
+  <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline', gutters:false" style="width:100%;height:100%;margin:0px;">
+    <div id="map" dojotype="dijit/layout/ContentPane" data-dojo-props="region:'center'"></div>   
+    <button id="calculateBtn">Calcular services area</button>
+  </div>
+</body>
+</html>
