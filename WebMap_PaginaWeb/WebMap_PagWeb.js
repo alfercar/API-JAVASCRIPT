@@ -42,7 +42,7 @@ require([
     ) {
 
 
-        //Mapa y layers
+        //Mapa
 
         var extentInitial = new Extent({
             "xmin": -417155.29869496945,
@@ -65,69 +65,90 @@ require([
 
         //popups
 
-        // var popupTeatros = new InfoTemplate(
-        //     "${nombre}", "Plan: ${plan_ }<br>Población por milla cuadrada: ${pop00_sqmi}<br>Valoración: ${st_area(shape)}");s
+        var popupTiendas = new InfoTemplate(
+            "${nombre}", "Plan: ${plan_}<br>Valoración: ${valoracion} <hr> Para mas información acceda a la aplicación.");
 
-        // var popupTeatros = new InfoTemplate(
-        //     "${nombre}", "Plan: ${plan_ }<br>Población por milla cuadrada: ${pop00_sqmi}<br>Valoración: ${st_area(shape)}");
+        var popupTeatros = new InfoTemplate(
+            "${nombre}", "Plan: ${plan_}<br>Valoración: ${valoracion} <hr> Para mas información acceda a la aplicación.");
 
-        // var popupParques = new InfoTemplate(
-        //     "${nombre}", "Plan: ${plan_ }<br>Población por milla cuadrada: ${pop00_sqmi}<br>Valoración: ${st_area(shape)}");
+        var popupParques = new InfoTemplate(
+            "${nombre}", "Plan: ${plan_}<br>Valoración: ${valoracion} <hr> Para mas información acceda a la aplicación.");
 
-        // var popupOcioNocturno = new InfoTemplate(
-        //     "${nombre}", "Plan: ${plan_ }<br>Población por milla cuadrada: ${pop00_sqmi}<br>Valoración: ${st_area(shape)}");
+        var popupOcioNocturno = new InfoTemplate(
+            "${nombre}", "Plan: ${plan_}<br>Valoración: ${valoracion} <hr> Para mas información acceda a la aplicación.");
 
-        // var popupMuseos = new InfoTemplate(
-        //     "${nombre}", "Plan: ${plan_ }<br>Población por milla cuadrada: ${pop00_sqmi}<br>Valoración: ${st_area(shape)}");
+        var popupMuseos = new InfoTemplate(
+            "${nombre}", "Plan: ${plan_}<br>Valoración: ${valoracion} <hr> Para mas información acceda a la aplicación.");
 
-        // var popupDistritos = new InfoTemplate(
-        //     "${nomdis}", "Plan: ${plan_ }<br>Población por milla cuadrada: ${pop00_sqmi}<br>Valoración: ${st_area(shape)}");
+        var popupDistritos = new InfoTemplate(
+            "${nomdis}", "Distrito: ${nomdis}");
 
-        // var popupDeporte = new InfoTemplate(
-        //     "${nombre}", "Plan: ${plan_ }<br>Población por milla cuadrada: ${pop00_sqmi}<br>Valoración: ${st_area(shape)}");
+        var popupDeporte = new InfoTemplate(
+            "${nombre}", "Plan: ${plan_}<br>Valoración: ${valoracion} <hr> Para mas información acceda a la aplicación.");
 
-        // var popupCines = new InfoTemplate(
-        //     "${nombre}", "Plan: ${plan_ }<br>Población por milla cuadrada: ${pop00_sqmi}<br>Valoración: ${st_area(shape)}");
+        var popupCines = new InfoTemplate(
+            "${nombre}", "Plan: ${plan_}<br>Valoración: ${valoracion} <hr> Para mas información acceda a la aplicación.");
 
-        // var popupBares = new InfoTemplate(
-        //     "${nombre}", "Plan: ${plan_ }<br>Población por milla cuadrada: ${pop00_sqmi}<br>Valoración: ${st_area(shape)}");
+        var popupBares = new InfoTemplate(
+            "${nombre}", "Plan: ${plan_}<br>Valoración: ${valoracion} <hr> Para mas información acceda a la aplicación.");
+
+        //outfields
+
+        var outfieldsTiendas = ["*"];
+        var outfieldsTeatros = ["*"];
+        var outfieldsCines = ["*"];
+        var outfieldsBares = ["*"];
+        var outfieldsOcioNocurno = ["*"];
+        var outfieldsDistritos = ["*"];
+        var outfieldsParques = ["*"];
+        var outfieldsDeporte = ["*"];
+        var outfieldsMuseos = ["*"];
 
 
         //capas
         var tiendas = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/8", {
-            "infoTemplate": popupTiendas,
+            "outFields": outfieldsTiendas,
+            "infoTemplate": popupTiendas
         });
 
         var teatros = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/7", {
-            "infoTemplate": popupTeatros,
+            "outFields": outfieldsTeatros,
+            "infoTemplate": popupTeatros
         });
 
         var parques = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/6", {
-            "infoTemplate": popupParques,
+            "outFields": outfieldsParques,
+            "infoTemplate": popupParques
         });
 
         var ocioNocturno = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/5", {
-            "infoTemplate": popupOcioNocturno,
+            "outFields": outfieldsOcioNocurno,
+            "infoTemplate": popupOcioNocturno
         });
 
         var museos = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/4", {
-            "infoTemplate": popupMuseos,
+            "outFields": outfieldsMuseos,
+            "infoTemplate": popupMuseos
         });
 
         var distritos = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/3", {
-            "infoTemplate": popupDistritos,
+            "outFields": outfieldsDistritos,
+            "infoTemplate": popupDistritos
         });
 
         var deporte = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/2", {
-            "infoTemplate": popupDeporte,
+            "outFields": outfieldsDeporte,
+            "infoTemplate": popupDeporte
         });
 
         var cines = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/1", {
-            "infoTemplate": popupCines,
+            "outFields": outfieldsCines,
+            "infoTemplate": popupCines
         });
 
         var bares = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/0", {
-            "infoTemplate": popupBares,
+            "outFields": outfieldsBares,
+            "infoTemplate": popupBares
         });
 
 
