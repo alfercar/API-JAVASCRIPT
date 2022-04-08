@@ -306,3 +306,99 @@ require([
 
 
   });
+
+//   var extentInitial = new Extent({
+//     "xmin": -419056.6703567408,
+//     "ymin": 4924431.759569371,
+//     "xmax": -404380.7609260067,
+//     "ymax": 4931330.201372098,
+//     "spatialReference": {
+//         "wkid": 102100
+//     }
+// });
+
+
+
+// mapMain = new Map("cpCenter", {
+//     basemap: "topo-vector",
+//     extent: extentInitial
+// });
+
+
+
+
+// // Add the earthquakes layer to the map
+
+
+// var tiendas = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/8");
+
+// var teatros = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/7");
+
+// var parques = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/6");
+
+// var ocioNocturno = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/5");
+
+// var museos = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/4");
+
+// var distritos = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/3");
+
+// var deporte = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/2");
+
+// var cines = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/1");
+
+// var bares = new FeatureLayer("https://services5.arcgis.com/zZdalPw2d0tQx8G1/ArcGIS/rest/services/Datos_PlanApp1/FeatureServer/0");
+
+
+
+// mapMain.addLayers([distritos, tiendas, bares, deporte, cines, museos, parques, ocioNocturno, teatros]);
+
+// var toggle = new BasemapToggle({
+//     map: mapMain
+// }, "BasemapToggle");
+// toggle.startup();
+
+// var overviewMap = new OverviewMap({
+//     map: mapMain,
+//     visible: false,
+//     attachTo: 'bottom-right'
+// });
+// overviewMap.startup()
+
+
+
+//   mapMain.on("layers-add-result", function () {
+//     var leyenda = new Legend({
+//         map: mapMain,
+
+//         arrangement: Legend.ALIGN_LEFT,
+//         layerInfos: [{
+//             layer: distritos,
+//             title: 'Distritos'
+//         }, {
+//             layer: museos,
+//             title: 'Museos'
+//         }, {
+//             layer: deporte,
+//             title: 'Instalaciones deportivas'
+//         }, {
+//             layer: teatros,
+//             title: 'Teatros'
+//         }, {
+//             layer: tiendas,
+//             title: 'Tiendas'
+//         }, {
+//             layer: parques,
+//             title: 'Parques'
+//         }, {
+//             layer: cines,
+//             title: 'Cines'
+//         }, {
+//             layer: ocioNocturno,
+//             title: 'Ocio Nocturno'
+//         }, {
+//             layer: bares,
+//             title: 'Bares y Restaurantes'
+//         }]
+//     }, "divLegend");
+//     leyenda.startup();
+// });

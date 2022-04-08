@@ -3,17 +3,21 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Visor PlanApp</title>
+    
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-    <title></title>
+    
 
     <link rel="stylesheet" href="https://js.arcgis.com/3.39/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.39/esri/css/esri.css">
 
-    <link rel="stylesheet" href="PruebaMasterOnline.css" />
+    <link rel="stylesheet" href="WebMap_PagWeb.css" />
 
     <script>var dojoConfig = { parseOnLoad: true };</script>
     <script src="https://js.arcgis.com/3.39/"></script>
-    <script src="PruebaMasterOnline.js"></script>
+    <script src="WebMap_PagWeb.js"></script>
+
+    
 
 </head>
 
@@ -23,8 +27,8 @@
 
         <div id="header" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'top'">
 
-            Master GIS ESRI España XIII edición
-            <div id="subheader">Alfonso Fernández Carpio</div>
+            Visor web de PlanApp
+            
 
         </div>
 
@@ -35,9 +39,10 @@
                     <div id="legendDiv"></div>
                 </div>
 
-                <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="title:'Tareas'">
-                    Operaciones
-                    <button id="pintaYQuery" type="button">Seleccionar ciudades</button>
+                <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="title:'Aplicación'" >
+                   <b>Pulse para acceder a la aplicación</b> 
+                    <hr>
+                    <a href="https://alfercar.github.io/Aplicacion_Usuarios/" target="blank" alt="PlanApp" title="Aplicación PlanApp"><button class="botones" type="button">PlanApp</button></a>
                     
                 </div>
 
@@ -52,7 +57,7 @@
             <!-- <div id="Overview"></div> -->
             <div style="position:absolute; right:20px; top:10px; z-Index:999;">
                 <div data-dojo-type="dijit/TitlePane"
-                    data-dojo-props="title:'Switch Basemap', closable:false, open:false">
+                    data-dojo-props="title:'Galería de mapas base', closable:false, open:false">
                     <div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
                         <div id="basemapGallery"></div>
                     </div>
@@ -62,12 +67,12 @@
 
         <div id="footer" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'bottom'">
 
-            <label for="dtb">Introduzca el nombre de un estado (La primera letra en mayúscula):</label> <input id="dtb"
-                data-dojo-type="dijit/form/TextBox" value="Washington" />
-            <button id="progButtonNode" type="button">Ir al estado</button>
+            <label for="dtb">Volver a la página web</label> 
+            <a href="https://carolus1997.github.io/Web_tfm/"><button class="botones" type="button">Volver</button></a>
         </div>
 
     </div>
 </body>
 
 </html>
+

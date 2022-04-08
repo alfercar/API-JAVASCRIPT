@@ -1,0 +1,90 @@
+html, body { 
+    height: 100%; width: 100%; margin: 0; 
+  } 
+  body{
+    background-color:white; overflow:hidden; 
+    font-family: "Trebuchet MS"; 
+  }
+   #map {
+   margin: 5px;
+    border:solid 4px #224a54;
+    -moz-border-radius: 4px;
+    
+  }
+  #map_root{
+    width: 100% !important;
+    height: 100% !important;
+  }
+  #header {
+    background-image: url(../WebMap_PaginaWeb/fondoarriba.JPG); background-repeat: repeat-x;
+    margin: 2px;
+    border: solid 4px #224a54;
+    color:rgb(0, 0, 0);
+    text-shadow: 4px 4px 8px rgb(255, 255, 255);
+    font-size:32pt; 
+    text-align:center; font-weight:bold; height:70px;
+  }
+  #subheader {
+    font-size:small;
+    color:white;
+    padding-left:20px;
+  }
+  #search {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    top: 10px;
+    left: 80px;
+  }
+  #rightPane{
+    background-color:white;
+    color:#3f3f3f;
+    border: solid 2px #224a54;
+    width:20%;
+  }
+  #leftPane{
+    margin: 5px;
+    padding:2px;
+    background-color:white;
+    color:#3f3f3f;
+    border: solid 2px #224a54;
+    width:20%;
+ }
+
+ /* #Overview{
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 50;
+} */
+
+  #footer {
+    margin: 2px;
+    border: solid 2px #224a54;
+    background-color:#7188d5;color:#000000;
+   font-size:20pt; text-align:center; height:40px;
+  }
+  .dijitTabInnerDiv{
+    background-color:#ecefe4;
+  }
+  #tabs{
+    padding:5px;
+  }
+ 
+  .botones {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+    font-size: large;
+    border-radius: 12px;
+    padding: 8px 16px;
+  }
+  
+  .botones:hover {
+    background-color: #008CBA;
+    color: white;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+
+
+
